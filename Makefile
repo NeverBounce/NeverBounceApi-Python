@@ -56,7 +56,7 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source neverbounce -m pytest
+	coverage run --source neverbounce_sdk -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
