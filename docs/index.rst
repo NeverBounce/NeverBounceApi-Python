@@ -12,7 +12,7 @@ Welcome to NeverBounce Python SDK's documentation!
 
 .. include:: ../README.rst
 
-.. automodule:: neverbounce
+.. automodule:: neverbounce_sdk
    :members:
 
 
