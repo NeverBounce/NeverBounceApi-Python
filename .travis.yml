@@ -6,7 +6,7 @@ python:
   - 3.4
   - 3.3
   - 2.7
-  - "pypy2-5.7.1"
+  - "pypy-5.7.1"
   - "pypy3.5-5.8.0"
     # "pypy" (short version) is deprecated but not documented as such:
     # see https://github.com/travis-ci/travis-cookbooks/pull/861
