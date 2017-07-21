@@ -111,24 +111,16 @@ class NeverBounceAPIClient(JobRunnerMixin, APICore):
     """
     The user visible API Client class
     """
-
-    @property
     def account_info(self):
-        if not hasattr(self, '_account_info'):
-            endpoint = urlfor('account', 'info')
-            resp = self._make_request('GET', endpoint)
-            self._check_response(resp)
-            self._account_info = resp.json()
-        return self._account_info
+        endpoint = urlfor('account', 'info')
+        resp = self._make_request('GET', endpoint)
+        self._check_response(resp)
+        return resp.json()
 
-    @account_info.deleter
-    def account_info(self):
-        del self._account_info
-
-    def verify_one(self, email,
-                   address_info=False,
-                   credits_info=False,
-                   max_execution_time=30):
+    def verify(self, email,
+               address_info=False,
+               credits_info=False,
+               max_execution_time=30):
         """
         Provides verification for a single email
         """
