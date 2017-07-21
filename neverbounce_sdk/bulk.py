@@ -1,6 +1,5 @@
 from .utils import urlfor
 
-
 _segmentation_options = {
     'valids',
     'invalids',
@@ -31,20 +30,13 @@ _appends_options = {
     'email_status'
 }
 
-_yes_no_repr = {
-    'int': 'BIN_1_0',
-    'upper': 'BIN_Y_N',
-    'lower': 'BIN_y_n',
-    'lowercase': 'BIN_yes_no',
-    'capitalcase': 'BIN_Yes_No',
-    'bool': 'BIN_true_false'
-}
-
-_linefeed_char_styles = {
-    'unix': 'LINEFEED_0A',         # \n
-    'windows': 'LINEFEED_0D0A',    # \r\n
-    'appleII': 'LINEFEED_0D',      # \r
-    'spooled': 'LINEFEED_0A'       # \n\r
+_job_status = {
+    'completed',
+    'processing',
+    'indexing',
+    'failed',
+    'manual_review',
+    'unpurchased'
 }
 
 
@@ -54,25 +46,31 @@ class JobRunnerMixin(object):
     bulk API endpoints
     """
 
-    def search(self):
+    def search(self, job_id,
+               filename=None, show_only=None,
+               page=0, items_per_page=10):
         # TODO: needs pagination
         return NotImplemented
 
-    def create(self, input, from_url=False,
+    def create(self, input, from_url=False, filename=None,
                auto_parse=False, auto_run=False, as_sameple=False):
         """
         Creates a bulk job
         """
         endpoint = urlfor('jobs', 'create')
-        # TODO: ask about the filename parameter
+
         data = dict(input=input,
                     auto_parse=int(auto_parse),
                     auto_run=int(auto_run),
                     as_sameple=int(as_sameple))
+
         data['input_location'] = 'remote_url' if from_url else 'supplied'
+        if filename is not None:
+            data['filename'] = filename
+
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
-        # XXX Job handles (return here)
+
         return resp.json()
 
     def parse(self, job_id, auto_start=True):
@@ -84,7 +82,7 @@ class JobRunnerMixin(object):
         data = dict(job_id=job_id, auto_start=int(auto_start))
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
-        # XXX Job handles (return here)
+
         return resp.json()
 
     def start(self, job_id, run_sample=False):
@@ -97,7 +95,7 @@ class JobRunnerMixin(object):
         data = dict(job_id=job_id, run_sample=int(run_sample))
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
-        # XXX Job handles (return here)
+
         return resp.json()
 
     def status(self, job_id):
@@ -111,51 +109,70 @@ class JobRunnerMixin(object):
         # TODO: needs pagination
         return NotImplemented
 
-    def download(self, job_id, fname,
+    def download(self, job_id, fd,
                  segmentation=('valids', 'invalids', 'catchalls', 'unknowns'),
                  appends=(),
                  yes_no_representation='int',
                  line_feed_type='unix'):
         """
-        Download the full results of job ``job_id`` to a csv file ``fname``.
+        Download the full results of job ``job_id`` to a file-like object
+        ``fd``.
         """
-        # construct this mass of options
         data = dict(job_id=job_id)
 
-        data.update({key: 1
-                     for key in segmentation
-                     if key in _segmentation_options})
+        def add_opts(opts, allowable):
+            # does a small bit of bookeeping to make sure we're returning
+            # useful errors if an option is given with a typo
+            for opt in opts:
+                if opt not in allowable:
+                    msg = ('{} is not a recognized option for the download'
+                           'endpoint'.format(opt))
+                    raise ValueError(msg)
+                data[opt] = 1
 
-        data.update({key: 1
-                     for key in appends
-                     if key in _appends_options})
+        add_opts(segmentation, _segmentation_options)
+        add_opts(appends, _appends_options)
 
-        # XXX: how are the settings sent, as json/form data? Assume so.
-        if yes_no_representation.startswith('BIN'):
-            data['binary_operators_type'] = yes_no_representation
-        else:
-            data['binary_operators_type'] = _yes_no_repr[yes_no_representation]
+        def set_setting(arg, argname, map_):
+            # confer note on add_opts; these are just conveniences
+            if arg in map_.values():
+                data[argname] = arg
+            else:
+                try:
+                    data[argname] = map_[arg]
+                except KeyError:
+                    msg = '{} is not a recognizable value for {}'.format(
+                        arg, argname
+                    )
+                    raise ValueError(msg)
 
-        if line_feed_type.startswith('LINEFEED'):
-            data['line_feed_type'] = line_feed_type
-        else:
-            data['line_feed_type'] = _linefeed_char_styles[line_feed_type]
+        set_setting(yes_no_representation, 'binary_operators_type', {
+            'int': 'BIN_1_0',
+            'upper': 'BIN_Y_N',
+            'lower': 'BIN_y_n',
+            'lowercase': 'BIN_yes_no',
+            'capitalcase': 'BIN_Yes_No',
+            'bool': 'BIN_true_false'
+        })
+
+        set_setting(line_feed_type, 'line_feed_type', {
+            'unix': 'LINEFEED_0A',         # \n
+            'windows': 'LINEFEED_0D0A',    # \r\n
+            'appleII': 'LINEFEED_0D',      # \r
+            'spooled': 'LINEFEED_0A'       # \n\r
+        })
 
         endpoint = urlfor('jobs', 'download')
-        # the return val is streaming; remember to set stream
+        # the return val is (possibly) streaming; remember to set stream
         resp = self._make_request('POST', endpoint, json=data, stream=True)
-        # cannot use self._check_response; this returns octets and hence
-        # resp.json() (should) fail
-        # we can still check for wire problems though
-        resp.raise_for_status()
-        # actually, TODO: how does this endpoint signal failure? The presence
-        # of JSON response instead of application/octet-stream? There's no
-        # actual error handling here yet
 
-        # write the streaming csv file to fname
-        with open(fname, 'wb') as fd:
-            for chunk in resp.iter_content(chunk_size=128):
-                fd.write(chunk)
+        # returns json if there's an error, octet-stream if all is good
+        if resp.headers['Content-Type'] == 'application/json':
+            self._check_response(resp)
+
+        # write the streaming csv file to fd
+        for chunk in resp.iter_content(chunk_size=128):
+            fd.write(chunk)
 
     def delete(self, job_id):
         """
@@ -163,3 +180,5 @@ class JobRunnerMixin(object):
         """
         endpoint = urlfor('jobs', 'delete')
         resp = self._make_request('POST', endpoint, data=dict(job_id=job_id))
+        self._check_response(resp)
+        return resp.json()
