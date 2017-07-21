@@ -1,5 +1,7 @@
 from .utils import urlfor
 
+__all__ = ['JobRunnerMixin']
+
 _segmentation_options = {
     'valids',
     'invalids',
@@ -40,17 +42,77 @@ _job_status = {
 }
 
 
+class _result_iter(object):
+    """ Utility class for iterating through a paginated API """
+
+    def __init__(method, *args, **kwargs):
+        self.method = method
+        self._update(method(*args, **kwargs))
+
+    def __next__(self):
+        while True:
+            if not self.results:
+                return
+            for res in self.results:
+                yield res
+
+            params = self.raw_results['query']
+            params['page'] += 1
+            self._update(self.method(**params))
+
+    def _update(self, obj):
+        self.raw_results = obj
+        self.results = obj['results']
+        self.page = obj['query']['page']
+        self.total_pages = obj['total_pages']
+
+
 class JobRunnerMixin(object):
     """
     Mixin class that exposes methods of interacting with the NeverBounce
     bulk API endpoints
     """
 
-    def search(self, job_id,
-               filename=None, show_only=None,
-               page=0, items_per_page=10):
-        # TODO: needs pagination
-        return NotImplemented
+    def raw_search(self,
+                   job_id=None, filename=None, show_only=None,
+                   page=0, items_per_page=10):
+        """Direct interface to the jobs/search endpoint. """
+        data = dict(page=page, items_per_page=items_per_page)
+
+        if job_id:
+            data['job_id'] = job_id
+
+        if filename:
+            data['filename'] = filename
+
+        if show_only:
+            if show_only not in _job_status:
+                msg = ('unknown argument {} for `show_only` in `search`; '
+                       'must be one of {}'.format(show_only, _job_status))
+                raise ValueError(msg)
+            data[show_only] = 1
+
+        endpoint = urlfor('jobs', 'search')
+        resp = self._make_request('GET', endpoint, params=data)
+        self._check_response(resp)
+        return resp.json()
+
+    def raw_results(self, job_id, page=0, items_per_page=10):
+        """Direct interface to the jobs/results endpoint. """
+        data = dict(job_id=job_id,
+                    page=page,
+                    items_per_page=items_per_page)
+
+        endpoint = urlfor('jobs', 'results')
+        resp = self._make_request('GET', endpoint, params=data)
+        self._check_response(resp)
+        return resp.json()
+
+    def search(self, **kwargs):
+        return _result_iter(self.raw_search, **kwargs)
+
+    def results(self, job_id, **kwargs):
+        return _result_iter(self.raw_results, job_id, **kwargs)
 
     def create(self, input, from_url=False, filename=None,
                auto_parse=False, auto_run=False, as_sameple=False):
@@ -104,10 +166,6 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         # XXX Job handles (return here)
         return resp.json()
-
-    def results(self):
-        # TODO: needs pagination
-        return NotImplemented
 
     def download(self, job_id, fd,
                  segmentation=('valids', 'invalids', 'catchalls', 'unknowns'),
