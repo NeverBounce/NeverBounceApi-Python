@@ -21,8 +21,11 @@ def test_single_check():
 
     assert info == {'status': 'success'}
     assert len(responses.calls) == 1
-    assert (responses.calls[0].request.url ==
-            'https://api.neverbounce.com/v4/single/check'
-            '?email=test%40example.com'
-            '&address_info=0&credits_info=1&max_execution_time=30'
-            '&key=static+key')
+    url = responses.calls[0].request.url
+    for urlchunk in ('https://api.neverbounce.com/v4/single/check',
+                     'email=test%40example.com',
+                     'address_info=0',
+                     'credits_info=1',
+                     'max_execution_time=30',
+                     'key=static+key'):
+        assert urlchunk in url
