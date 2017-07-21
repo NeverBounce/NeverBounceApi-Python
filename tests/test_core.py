@@ -5,15 +5,13 @@ import pytest
 from requests import Session
 
 import neverbounce_sdk
-from neverbounce_sdk import (NeverBounceApiClient,
-                             StaticTokenAuth,
-                             UnsupportedMethod)
+from neverbounce_sdk import NeverBounceAPIClient, StaticTokenAuth
 
 
 def test_client_function():
-    """neverbounce_sdk.client() should return a NeverBounceApiClient()"""
+    """neverbounce_sdk.client() should return a NeverBounceAPIClient()"""
     client = neverbounce_sdk.client()
-    assert isinstance(client, NeverBounceApiClient)
+    assert isinstance(client, NeverBounceAPIClient)
 
 
 def test_default_client_auth_is_None():
@@ -23,7 +21,7 @@ def test_default_client_auth_is_None():
 
 
 def test_setting_auth_with_string():
-    """You may pass a string token directly to the NeverBounceApiClient.auth
+    """You may pass a string token directly to the NeverBounceAPIClient.auth
     property"""
     client = neverbounce_sdk.client()
     # sets the StaticTokenAuth and auth.token
@@ -35,7 +33,7 @@ def test_setting_auth_with_string():
 
 def test_setting_auth_with_StaticTokenAuth():
     """You may instantiate and pass a StaticTokenAuth object directly to the
-    NeverBounceApiClient.auth property"""
+    NeverBounceAPIClient.auth property"""
     client = neverbounce_sdk.client()
     client.auth = StaticTokenAuth('secret token')
     assert client.auth is not None
@@ -44,7 +42,7 @@ def test_setting_auth_with_StaticTokenAuth():
 
 
 def test_clearing_client_auth():
-    """You may clear the NeverBounceApiClient.auth propery by setting it to
+    """You may clear the NeverBounceAPIClient.auth propery by setting it to
     None or the ``del`` statement; they are equivalent"""
     client = neverbounce_sdk.client()
     # by directly setting the property to None
@@ -83,6 +81,8 @@ def test_setting_custom_session_recognized_in_context_manager():
 
 
 def test_client_auth_fallback_with_custom_session_present():
+    """The NeverBounceAPIClient will fall back to using a session auth if a
+    session is present but no auth"""
     custom_session = Session()
     custom_session.auth = StaticTokenAuth('secret token!')
     client = neverbounce_sdk.client(session=custom_session)
