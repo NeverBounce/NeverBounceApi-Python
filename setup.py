@@ -10,7 +10,7 @@ with open('LICENSE') as fd:
 
 setup(
     name='neverbounce-sdk',
-    version='0.1.0.dev1',
+    version='1.0.0',
     description="Python SDK for the NeverBounce API",
     long_description=long_description,
     author="NeverBounce Team",
@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     keywords='neverbounce',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
