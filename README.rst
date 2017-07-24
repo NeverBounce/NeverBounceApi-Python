@@ -62,7 +62,7 @@ jobs::
     emails = [
         {'email': 'tomato@veggies.com'},  # must have an 'email' key
         {'email': 'cucumber@veggies.com',
-        'best_when': 'cold'},            # may contain arbitrary metadata
+        'best_when': 'cold'},             # may contain "metadata"
     ]
     job = client.create(emails)
 
@@ -73,6 +73,13 @@ jobs::
     client.start(job['id'])
     progress = client.status(job['id'])
     print(progress)  # dict with keys 'job_status', 'started', 'percent_complete', etc
+
+When creating a job, you may attach "metadata" in the form of additional keys
+to each object (python ``dict``) included in the job input listing.  Note that
+these additional keys will be *broadcasted*; i.e., every row of the result set
+for the job will contain an entry for every key - if the value of the key was
+not specified in the input, it will be the empty string in the job processing's
+output.
 
 All API operations return dictionaries with information about the execution of
 the operation or the results of the operation, whichever is more appropriate.
