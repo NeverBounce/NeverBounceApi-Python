@@ -1,4 +1,5 @@
 """Test the API endpoints located at /jobs (except /jobs/download)"""
+from __future__ import unicode_literals
 import json
 
 import pytest
@@ -30,7 +31,7 @@ def test_search(client, monkeypatch):
 
     monkeypatch.setattr(client, 'raw_search', _search)
     results = client.search()
-    for res, exp in zip(results, expected_results):
+    for res, exp in zip(iter(results), expected_results):
         assert res == exp
 
 
@@ -49,7 +50,7 @@ def test_results(client, monkeypatch):
 
     monkeypatch.setattr(client, 'raw_results', _results)
     results = client.results(0)
-    for res, exp in zip(results, expected_results):
+    for res, exp in zip(iter(results), expected_results):
         assert res == exp
 
 
@@ -102,7 +103,7 @@ def test_create(client):
                     auto_parse=0, auto_run=0, as_sample=0)
 
     client.create(['test@example.com'])
-    called_with = json.loads(responses.calls[0].request.body)
+    called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     assert 'filename' not in called_with
     for k,v in raw_args.items():
         assert called_with[k] == v
@@ -110,7 +111,7 @@ def test_create(client):
     new_raw_args = raw_args.copy()
     new_raw_args['filename'] = 'testfile.csv'
     client.create(['test@example.com'], filename='testfile.csv')
-    called_with = json.loads(responses.calls[1].request.body)
+    called_with = json.loads(responses.calls[1].request.body.decode('UTF-8'))
     for k,v in raw_args.items():
         assert called_with[k] == v
 
@@ -123,7 +124,7 @@ def test_parse(client):
                   status=200)
 
     client.parse(123)
-    called_with = json.loads(responses.calls[0].request.body)
+    called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     expected_args = dict(job_id=123, auto_start=1)
     for k,v in expected_args.items():
         assert called_with[k] == v
@@ -137,7 +138,7 @@ def test_start(client):
                   status=200)
 
     client.start(123)
-    called_with = json.loads(responses.calls[0].request.body)
+    called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     expected_args = dict(job_id=123, run_sample=0)
     for k,v in expected_args.items():
         assert called_with[k] == v

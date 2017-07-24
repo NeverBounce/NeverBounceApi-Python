@@ -1,4 +1,5 @@
 """Test the API endpoints located at /jobs"""
+from __future__ import unicode_literals
 import json
 
 import pytest
@@ -30,7 +31,7 @@ def test_download_defaults(client, tempfile):
     client.download(123, tempfile, line_feed_type='LINEFEED_0A')
     assert tempfile.read() == r'data\ndata'
 
-    called_with = json.loads(responses.calls[0].request.body)
+    called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     default_args = {
         'line_feed_type': 'LINEFEED_0A',
         'binary_operators_type': 'BIN_1_0',

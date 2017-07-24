@@ -77,6 +77,9 @@ class ResultIter(object):
             return next(self._results)
         return rval
 
+    # Python 2 COMPAT
+    next = __next__
+
     def __iter__(self):
         return self
 
