@@ -1,20 +1,11 @@
+"""
+Core API support methods
+"""
 import requests
 
 from .auth import StaticTokenAuth
-from .bulk import JobRunnerMixin
 from .exceptions import _status_to_exception, NeverBounceAPIException
 from .utils import urlfor
-
-
-__all__ = [
-    'client',
-    'NeverBounceAPIClient'
-]
-
-
-def client(*args, **kwargs):
-    """ Factory function (alias) for NeverBounceAPIClient objects """
-    return NeverBounceAPIClient(*args, **kwargs)
 
 
 class APICore(object):
@@ -105,31 +96,3 @@ class APICore(object):
         """When exiting a context, close and clear the session"""
         self.session.close()
         self.session = None
-
-
-class NeverBounceAPIClient(JobRunnerMixin, APICore):
-    """
-    The user visible API Client class
-    """
-    def account_info(self):
-        endpoint = urlfor('account', 'info')
-        resp = self._make_request('GET', endpoint)
-        self._check_response(resp)
-        return resp.json()
-
-    def verify(self, email,
-               address_info=False,
-               credits_info=False,
-               max_execution_time=30):
-        """
-        Provides verification for a single email
-        """
-        endpoint = urlfor('single', 'check')
-        params = dict(email=email,
-                      # convert boolean flags to 0 or 1
-                      address_info=int(address_info),
-                      credits_info=int(credits_info),
-                      max_execution_time=max_execution_time)
-        resp = self._make_request('GET', endpoint, params=params)
-        self._check_response(resp)
-        return resp.json()
