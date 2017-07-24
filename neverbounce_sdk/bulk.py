@@ -42,29 +42,43 @@ _job_status = {
 }
 
 
-class _result_iter(object):
+class ResultIter(object):
     """Utility class for iterating through a paginated API. """
+    page_end = object()
 
     def __init__(self, method, *args, **kwargs):
-        self.method = method
-        self._update(method(*args, **kwargs))
+        self._method = method
+        self.data = method(*args, **kwargs)
+        self._update()
+
+    def _update(self):
+        self._results = iter(self.data['results'])
+        self.page = int(self.data['query']['page'])
+        self.total_pages = int(self.data['total_pages'])
+
+    def get_next_page(self):
+        query = {}
+        for key, val in self.data['query'].items():
+            if key in _job_status or key in ('page', 'items_per_page'):
+                query[key] = int(val)
+            else:
+                query[key] = val
+
+        query['page'] += 1
+        self.data = self._method(**query)
+        self._update()
 
     def __next__(self):
-        while True:
-            if not self.results:
-                return
-            for res in self.results:
-                yield res
+        # traverse pages
+        rval = next(self._results, self.page_end)
+        if rval is self.page_end:
+            self.get_next_page()
+            # if this raises StopIteration, then we're done
+            return next(self._results)
+        return rval
 
-            params = self.raw_results['query']
-            params['page'] += 1
-            self._update(self.method(**params))
-
-    def _update(self, obj):
-        self.raw_results = obj
-        self.results = obj['results']
-        self.page = obj['query']['page']
-        self.total_pages = obj['total_pages']
+    def __iter__(self):
+        return self
 
 
 class JobRunnerMixin(object):
@@ -75,7 +89,7 @@ class JobRunnerMixin(object):
 
     def raw_search(self,
                    job_id=None, filename=None, show_only=None,
-                   page=0, items_per_page=10):
+                   page=1, items_per_page=10):
         """Direct interface to the jobs/search endpoint. See the documentation
         for :py:class:``search`` for more."""
         data = dict(page=page, items_per_page=items_per_page)
@@ -98,7 +112,7 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         return resp.json()
 
-    def raw_results(self, job_id, page=0, items_per_page=10):
+    def raw_results(self, job_id, page=1, items_per_page=10):
         """Direct interface to the jobs/results endpoint. See the documentation
         fro ``results`` for more."""
         data = dict(job_id=job_id,
@@ -153,7 +167,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-search
         """
-        return _result_iter(self.raw_search, **kwargs)
+        return ResultIter(self.raw_search, **kwargs)
 
     def results(self, job_id, **kwargs):
         """
@@ -174,10 +188,10 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-results
         """
-        return _result_iter(self.raw_results, job_id, **kwargs)
+        return ResultIter(self.raw_results, job_id, **kwargs)
 
     def create(self, input, from_url=False, filename=None,
-               auto_parse=False, auto_run=False, as_sameple=False):
+               auto_parse=False, auto_run=False, as_sample=False):
         """
         Creates a bulk job.
 
@@ -220,7 +234,7 @@ class JobRunnerMixin(object):
         data = dict(input=input,
                     auto_parse=int(auto_parse),
                     auto_run=int(auto_run),
-                    as_sameple=int(as_sameple))
+                    as_sample=int(as_sample))
 
         data['input_location'] = 'remote_url' if from_url else 'supplied'
         if filename is not None:
@@ -472,6 +486,6 @@ class JobRunnerMixin(object):
             https://developers.neverbounce.com/v4.0/reference#jobs-delete
         """
         endpoint = urlfor('jobs', 'delete')
-        resp = self._make_request('POST', endpoint, data=dict(job_id=job_id))
+        resp = self._make_request('GET', endpoint, params=dict(job_id=job_id))
         self._check_response(resp)
         return resp.json()

@@ -72,7 +72,13 @@ class APICore(object):
         if api_status == 'success':
             return resp
         # if not, construct and raise the appropriate exception
-        exc = _status_to_exception[api_status]
+        try:
+            exc = _status_to_exception[api_status]
+        except KeyError:
+            # this is an uknown failure from upstream; letting the KeyError
+            # propgate would be weird to the user: use a generic error
+            exc = NeverBounceAPIException
+
         message = data.get('message')
         execution_time=data.get('execution_time')
 
