@@ -6,8 +6,7 @@ import responses
 
 import neverbounce_sdk
 from neverbounce_sdk import (urlfor,
-                             NeverBounceAPIException,
-                             UnsupportedMethod)
+                             NeverBounceAPIException)
 from neverbounce_sdk.exceptions import _status_to_exception
 
 
@@ -40,5 +39,5 @@ def test_weird_response_no_status_raises():
                   # key
                   json={'message': None})
 
-    with pytest.raises(NeverBounceAPIException) as raised_exc:
+    with pytest.raises(NeverBounceAPIException):
         neverbounce_sdk.client().account_info()

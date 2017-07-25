@@ -5,7 +5,6 @@ import requests
 
 from .auth import StaticTokenAuth
 from .exceptions import _status_to_exception, NeverBounceAPIException
-from .utils import urlfor
 
 
 class APICore(object):
@@ -80,7 +79,7 @@ class APICore(object):
             exc = NeverBounceAPIException
 
         message = data.get('message')
-        execution_time=data.get('execution_time')
+        execution_time = data.get('execution_time')
 
         # if the problem is with authentication, rewrite the error message to
         # make more sense in the current context

@@ -23,8 +23,8 @@ def test_search(client, monkeypatch):
 
     def _search(**kwargs):
         if not kwargs:
-            kwargs=dict(job_id=None, filename=None, show_only=None,
-                        page=0, items_per_page=10)
+            kwargs = dict(job_id=None, filename=None, show_only=None,
+                          page=0, items_per_page=10)
         return dict(results=expected_results,
                     total_pages=1,
                     query=kwargs)
@@ -42,8 +42,8 @@ def test_results(client, monkeypatch):
 
     def _results(job_id=0, **kwargs):
         if not kwargs:
-            kwargs=dict(filename=None, show_only=None,
-                        page=0, items_per_page=10)
+            kwargs = dict(filename=None, show_only=None,
+                          page=0, items_per_page=10)
         return dict(results=expected_results,
                     total_pages=1,
                     query=kwargs)
@@ -105,14 +105,14 @@ def test_create(client):
     client.create(['test@example.com'])
     called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     assert 'filename' not in called_with
-    for k,v in raw_args.items():
+    for k, v in raw_args.items():
         assert called_with[k] == v
 
     new_raw_args = raw_args.copy()
     new_raw_args['filename'] = 'testfile.csv'
     client.create(['test@example.com'], filename='testfile.csv')
     called_with = json.loads(responses.calls[1].request.body.decode('UTF-8'))
-    for k,v in raw_args.items():
+    for k, v in raw_args.items():
         assert called_with[k] == v
 
 
@@ -126,7 +126,7 @@ def test_parse(client):
     client.parse(123)
     called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     expected_args = dict(job_id=123, auto_start=1)
-    for k,v in expected_args.items():
+    for k, v in expected_args.items():
         assert called_with[k] == v
 
 
@@ -140,7 +140,7 @@ def test_start(client):
     client.start(123)
     called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
     expected_args = dict(job_id=123, run_sample=0)
-    for k,v in expected_args.items():
+    for k, v in expected_args.items():
         assert called_with[k] == v
 
 

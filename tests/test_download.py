@@ -42,7 +42,7 @@ def test_download_defaults(client, tempfile):
         'job_id': 123
     }
 
-    for k,v in default_args.items():
+    for k, v in default_args.items():
         assert called_with[k] == v
 
 

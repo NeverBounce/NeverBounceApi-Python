@@ -1,7 +1,6 @@
 """
 Tests the core functionality of the NeverBounce API SDK
 """
-import pytest
 from requests import Session
 
 import neverbounce_sdk

@@ -1,7 +1,6 @@
 """
 Tests the Single endpoints
 """
-import pytest
 import responses
 
 import neverbounce_sdk
