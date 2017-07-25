@@ -15,6 +15,7 @@ python:
 matrix:
     include:
         # run the flakes explicitly
+      - python: 3.6
         env: TOXENV=flake8
     allow_failures:
         # its nice to know, but we don't expect to be running perfectly against
