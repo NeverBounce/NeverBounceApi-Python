@@ -22,11 +22,11 @@ def test_search(client, monkeypatch):
     expected_results = [{'data': val} for val in 'abc123']
 
     def _search(**kwargs):
-        if not kwargs:
-            kwargs = dict(job_id=None, filename=None, show_only=None,
-                          page=0, items_per_page=10)
+        kwargs.update(dict(job_id=None, filename=None, show_only=None,
+                      page=0, items_per_page=10))
         return dict(results=expected_results,
                     total_pages=1,
+                    total_results=1,
                     query=kwargs)
 
     monkeypatch.setattr(client, 'raw_search', _search)
@@ -41,11 +41,11 @@ def test_results(client, monkeypatch):
     expected_results = [{'data': val} for val in 'abc123']
 
     def _results(job_id=0, **kwargs):
-        if not kwargs:
-            kwargs = dict(filename=None, show_only=None,
-                          page=0, items_per_page=10)
+        kwargs.update(dict(filename=None, show_only=None,
+                      page=0, items_per_page=10))
         return dict(results=expected_results,
                     total_pages=1,
+                    total_results=1,
                     query=kwargs)
 
     monkeypatch.setattr(client, 'raw_results', _results)

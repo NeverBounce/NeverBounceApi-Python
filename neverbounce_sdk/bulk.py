@@ -55,6 +55,7 @@ class ResultIter(object):
         self._results = iter(self.data['results'])
         self.page = int(self.data['query']['page'])
         self.total_pages = int(self.data['total_pages'])
+        self.total_results = int(self.data['total_results'])
 
     def get_next_page(self):
         query = {}
@@ -92,7 +93,7 @@ class JobRunnerMixin(object):
 
     def raw_search(self,
                    job_id=None, filename=None, show_only=None,
-                   page=1, items_per_page=10):
+                   page=1, items_per_page=10, **extra_query):
         """Direct interface to the jobs/search endpoint. See the documentation
         for :py:class:``search`` for more."""
         data = dict(page=page, items_per_page=items_per_page)
@@ -110,17 +111,21 @@ class JobRunnerMixin(object):
                 raise ValueError(msg)
             data[show_only] = 1
 
+        data.update(extra_query)
+
         endpoint = urlfor('jobs', 'search')
         resp = self._make_request('GET', endpoint, params=data)
         self._check_response(resp)
         return resp.json()
 
-    def raw_results(self, job_id, page=1, items_per_page=10):
+    def raw_results(self, job_id, page=1, items_per_page=10, **extra_query):
         """Direct interface to the jobs/results endpoint. See the documentation
         fro ``results`` for more."""
         data = dict(job_id=job_id,
                     page=page,
                     items_per_page=items_per_page)
+
+        data.update(extra_query)
 
         endpoint = urlfor('jobs', 'results')
         resp = self._make_request('GET', endpoint, params=data)
