@@ -10,13 +10,13 @@ with open('LICENSE') as fd:
 
 setup(
     name='neverbounce-sdk',
-    version='1.0.0',
+    version='1.0.1',
     description="Python SDK for the NeverBounce API",
     long_description=long_description,
     author="NeverBounce Team",
     author_email='support@neverbounce.com',
     url='https://github.com/NeverBounce/NeverBounceApi-Python',
-    packages=find_packages(include=['neverbounce']),
+    packages=find_packages(include=['neverbounce_sdk']),
     include_package_data=True,
     install_requires=[
         'requests',
