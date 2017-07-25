@@ -16,7 +16,7 @@ def test_single_check():
                   json={'status': 'success'})
 
     with neverbounce_sdk.client(auth='static key') as client:
-        info = client.verify('test@example.com', credits_info=True)
+        info = client.single_verify('test@example.com', credits_info=True)
 
     assert info == {'status': 'success'}
     assert len(responses.calls) == 1

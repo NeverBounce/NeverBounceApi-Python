@@ -7,10 +7,10 @@ from .utils import urlfor
 class SingleMixin(object):
     __doc__ = __doc__
 
-    def verify(self, email,
-               address_info=False,
-               credits_info=False,
-               timeout=30):
+    def single_verify(self, email,
+                      address_info=False,
+                      credits_info=False,
+                      timeout=30):
         """Provides verification for a single email.
 
         Arguments:

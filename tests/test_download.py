@@ -28,7 +28,7 @@ def test_download_defaults(client, tempfile):
                   status=200,
                   content_type='application/octet-stream')
 
-    client.download(123, tempfile, line_feed_type='LINEFEED_0A')
+    client.jobs_download(123, tempfile, line_feed_type='LINEFEED_0A')
     assert tempfile.read() == r'data\ndata'
 
     called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
@@ -54,15 +54,15 @@ def test_download_upstream_error(client, tempfile):
                   json={'status': 'failure'})
 
     with pytest.raises(NeverBounceAPIException):
-        client.download(123, tempfile)
+        client.jobs_download(123, tempfile)
 
 
 def test_malformed_download_options(client, tempfile):
     with pytest.raises(ValueError):
-        client.download(123, tempfile, segmentation=('not an opt',))
+        client.jobs_download(123, tempfile, segmentation=('not an opt',))
     with pytest.raises(ValueError):
-        client.download(123, tempfile, appends=('not an opt',))
+        client.jobs_download(123, tempfile, appends=('not an opt',))
     with pytest.raises(ValueError):
-        client.download(123, tempfile, yes_no_representation='frowns')
+        client.jobs_download(123, tempfile, yes_no_representation='frowns')
     with pytest.raises(ValueError):
-        client.download(123, tempfile, line_feed_type='emojis')
+        client.jobs_download(123, tempfile, line_feed_type='emojis')

@@ -132,7 +132,7 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         return resp.json()
 
-    def search(self, **kwargs):
+    def jobs_search(self, **kwargs):
         """
         This function wraps the ``raw_search`` method in a custom results
         iterator.  Iteration is over the items of the ``results`` object
@@ -177,7 +177,7 @@ class JobRunnerMixin(object):
         """
         return ResultIter(self.raw_search, **kwargs)
 
-    def results(self, job_id, **kwargs):
+    def jobs_results(self, job_id, **kwargs):
         """
         This function wraps the ``raw_results`` method in a custom results
         iterator.  Iteration is over the items of the ``results`` object
@@ -198,8 +198,8 @@ class JobRunnerMixin(object):
         """
         return ResultIter(self.raw_results, job_id, **kwargs)
 
-    def create(self, input, from_url=False, filename=None,
-               auto_parse=False, auto_start=False, as_sample=False):
+    def jobs_create(self, input, from_url=False, filename=None,
+                    auto_parse=False, auto_start=False, as_sample=False):
         """
         Creates a bulk job.
 
@@ -253,7 +253,7 @@ class JobRunnerMixin(object):
 
         return resp.json()
 
-    def parse(self, job_id, auto_start=True):
+    def jobs_parse(self, job_id, auto_start=True):
         """
         This endpoint allows you to parse a job created with auto_parse
         disabled. You cannot reparse a list once it's been parsed.
@@ -279,7 +279,7 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         return resp.json()
 
-    def start(self, job_id, run_sample=False):
+    def jobs_start(self, job_id, run_sample=False):
         """
         This endpoint allows you to start a job created or parsed with
         auto_start disabled. Once the list has been started the credits will be
@@ -306,7 +306,7 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         return resp.json()
 
-    def status(self, job_id):
+    def jobs_status(self, job_id):
         """
         Returns a status object (a dict) with a number of keys relevant to the
         status of the job given by ``job_id``.
@@ -326,11 +326,12 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         return resp.json()
 
-    def download(self, job_id, fd,
-                 segmentation=('valids', 'invalids', 'catchalls', 'unknowns'),
-                 appends=(),
-                 yes_no_representation='int',
-                 line_feed_type='unix'):
+    def jobs_download(self, job_id, fd,
+                      segmentation=('valids', 'invalids',
+                                    'catchalls', 'unknowns'),
+                      appends=(),
+                      yes_no_representation='int',
+                      line_feed_type='unix'):
         r"""
         Download the full results of job ``job_id`` as a CSV file into the
         file-like object given by ``fd``.
@@ -480,7 +481,7 @@ class JobRunnerMixin(object):
         for chunk in resp.iter_content(chunk_size=128):
             fd.write(chunk)
 
-    def delete(self, job_id):
+    def jobs_delete(self, job_id):
         """
         Permanently delete the job with id ``job_id``
 
