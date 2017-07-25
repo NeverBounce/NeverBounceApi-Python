@@ -10,7 +10,7 @@ class SingleMixin(object):
     def verify(self, email,
                address_info=False,
                credits_info=False,
-               max_execution_time=30):
+               timeout=30):
         """Provides verification for a single email.
 
         Arguments:
@@ -19,7 +19,7 @@ class SingleMixin(object):
                 the address. Default is ``False``.
             credits_info (bool): If ``True``, return extra information about
                 the account and how many credits remain.  Default is ``False``.
-            max_execution_time (int): Set a timeout for the request.  Default
+            timeout (int): Set a timeout for the request.  Default
                 is ``30``.
 
         Returns:
@@ -33,7 +33,7 @@ class SingleMixin(object):
                       # convert boolean flags to 0 or 1
                       address_info=int(address_info),
                       credits_info=int(credits_info),
-                      max_execution_time=max_execution_time)
+                      timeout=timeout)
         resp = self._make_request('GET', endpoint, params=params)
         self._check_response(resp)
         return resp.json()

@@ -194,7 +194,7 @@ class JobRunnerMixin(object):
         return ResultIter(self.raw_results, job_id, **kwargs)
 
     def create(self, input, from_url=False, filename=None,
-               auto_parse=False, auto_run=False, as_sample=False):
+               auto_parse=False, auto_start=False, as_sample=False):
         """
         Creates a bulk job.
 
@@ -217,7 +217,7 @@ class JobRunnerMixin(object):
                 If ``True``, begin parsing the job immediately upon receipt.
                 Default is ``False``.
 
-            auto_run (bool):
+            auto_start (bool):
                 If ``True``, begin processing the job immediately upon parsing.
                 Default is ``False``.
 
@@ -236,7 +236,7 @@ class JobRunnerMixin(object):
 
         data = dict(input=input,
                     auto_parse=int(auto_parse),
-                    auto_run=int(auto_run),
+                    auto_start=int(auto_start),
                     as_sample=int(as_sample))
 
         data['input_location'] = 'remote_url' if from_url else 'supplied'

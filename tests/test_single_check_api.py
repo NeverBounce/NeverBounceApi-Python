@@ -25,6 +25,6 @@ def test_single_check():
                      'email=test%40example.com',
                      'address_info=0',
                      'credits_info=1',
-                     'max_execution_time=30',
+                     'timeout=30',
                      'key=static+key'):
         assert urlchunk in url

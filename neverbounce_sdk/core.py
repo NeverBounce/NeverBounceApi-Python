@@ -3,6 +3,7 @@ Core API support methods
 """
 import requests
 
+from . import __version__ as VERSION
 from .auth import StaticTokenAuth
 from .exceptions import _status_to_exception, NeverBounceAPIException
 
@@ -47,6 +48,11 @@ class APICore(object):
         # no try/except; any errors that occur down here need to propogate
         # prefer an ``auth`` from invoker, and remember self.auth falls back to
         # self.session.auth if self._auth is not set and self.session is
+        headers = kwargs.pop('headers', {})
+        user_agent = 'NeverBounceAPI-Python/{}'.format(VERSION)
+        headers.update({'User-Agent': user_agent})
+        kwargs['headers'] = headers
+
         if not kwargs.get('auth'):
             kwargs.update({'auth': self.auth})
         if self.session:
