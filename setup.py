@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='neverbounce-sdk',
-    version='1.0.2',
+    version='1.0.3',
     description="Official Python SDK for the NeverBounce API",
     long_description=long_description,
     author="NeverBounce Team",
@@ -39,7 +39,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
     ],
     test_suite='tests',
     tests_require=['pytest'],
