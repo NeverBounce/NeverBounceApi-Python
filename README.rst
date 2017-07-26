@@ -1,19 +1,21 @@
+*********************
 NeverBounceApi-Python
 *********************
 
-.. image:: https://travis-ci.org/NeverBounce/NeverBounceApi-Python.svg?branch=master
-    :target: https://travis-ci.org/NeverBounce/NeverBounceApi-Python
-    :alt: Build Status
+.. image:: https://neverbounce-marketing.s3.amazonaws.com/neverbounce_color_600px.png
+    :target: https://neverbounce.com
+    :width: 600
+    :align: center
+    :alt: NeverBounce Logo
 
-.. image:: https://codeclimate.com/github/NeverBounce/NeverBounceApi-Python/badges/gpa.svg
-    :target: https://codeclimate.com/github/NeverBounce/NeverBounceApi-Python
-    :alt: Code Climate
-
+|travisci| |codeclimate|
 
 Welcome to NeverBounce's Python SDK!  We hope that it will aid you in consuming
 our service.  Please report any bugs to the github issue tracker and make sure
 you read the documentation before use.
 
+.. pull-quote::
+  This library is for use with NeverBounce's V4 API which is currently in beta
 
 Installation
 ------------
@@ -147,3 +149,11 @@ Many of the inputs and outputs of the client object's functions map fairly
 closely to NeverBounce's raw v4 API, reading through the `official API
 docs<https://developers.neverbounce.com/v4.0/reference#account>` will be
 valuable in conjunction with using the built-in online help.
+
+.. |travisci| image:: https://travis-ci.org/NeverBounce/NeverBounceApi-Python.svg?branch=master
+    :target: https://travis-ci.org/NeverBounce/NeverBounceApi-Python
+    :alt: Build Status
+
+.. |codeclimate| image:: https://codeclimate.com/github/NeverBounce/NeverBounceApi-Python/badges/gpa.svg
+    :target: https://codeclimate.com/github/NeverBounce/NeverBounceApi-Python
+    :alt: Code Climate
