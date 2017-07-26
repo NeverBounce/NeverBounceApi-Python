@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+from codecs import open
+from os import path
 
 here = path.abspath(path.dirname(__file__))
 
