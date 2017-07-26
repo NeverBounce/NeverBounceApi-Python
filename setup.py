@@ -25,7 +25,7 @@ setup(
     keywords=['neverbounce','api', 'email', 'verification','cleaning'],
     classifiers=[
         'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers
+        'Intended Audience :: Developers',
         'Topic :: Communications :: Email',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
