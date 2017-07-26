@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+from codecs import open
+from os import path
 
-with open('README.rst') as fd:
-    long_description = fd.read()
+here = path.abspath(path.dirname(__file__))
 
-with open('LICENSE') as fd:
-    license = fd.read()
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='neverbounce-sdk',
     version='1.0.2',
-    description="Python SDK for the NeverBounce API",
+    description="Official Python SDK for the NeverBounce API",
     long_description=long_description,
     author="NeverBounce Team",
     author_email='support@neverbounce.com',
@@ -21,12 +22,13 @@ setup(
     install_requires=[
         'requests',
     ],
-    license=license,
+    license='MIT',
     zip_safe=False,
-    keywords='neverbounce',
+    keywords=['neverbounce','api', 'email', 'verification','cleaning'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
+        'Topic :: Communications :: Email',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
