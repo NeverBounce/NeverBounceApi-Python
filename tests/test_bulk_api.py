@@ -22,7 +22,7 @@ def test_search(client, monkeypatch):
     expected_results = [{'data': val} for val in 'abc123']
 
     def _search(**kwargs):
-        kwargs.update(dict(job_id=None, filename=None, show_only=None,
+        kwargs.update(dict(job_id=None, filename=None, job_status=None,
                       page=0, items_per_page=10))
         return dict(results=expected_results,
                     total_pages=1,
@@ -81,14 +81,14 @@ def test_raw_search_interface(client):
     for arg in ('page=1', 'items_per_page=10'):
         assert arg in request_url
 
-    client.raw_search(job_id=123, filename='test.csv', show_only='completed')
+    client.raw_search(job_id=123, filename='test.csv', job_status='complete')
     request_url = responses.calls[1].request.url
     for arg in ('page=1', 'items_per_page=10', 'job_id=123',
-                'filename=test.csv', 'completed=1'):
+                'filename=test.csv', 'job_status=complete'):
         assert arg in request_url
 
     with pytest.raises(ValueError):
-        client.raw_search(show_only='some unknown value OH NO')
+        client.raw_search(job_status='some unknown value OH NO')
 
 
 @responses.activate

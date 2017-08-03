@@ -33,12 +33,15 @@ _appends_options = {
 }
 
 _job_status = {
-    'completed',
-    'processing',
-    'indexing',
+    'under_review',
+    'queued',
     'failed',
-    'manual_review',
-    'unpurchased'
+    'complete',
+    'running',
+    'parsing',
+    'waiting',
+    'parsing',
+    'uploading'
 }
 
 
@@ -92,7 +95,7 @@ class JobRunnerMixin(object):
     """
 
     def raw_search(self,
-                   job_id=None, filename=None, show_only=None,
+                   job_id=None, filename=None, job_status=None,
                    page=1, items_per_page=10, **extra_query):
         """Direct interface to the jobs/search endpoint. See the documentation
         for :py:class:``search`` for more."""
@@ -104,12 +107,12 @@ class JobRunnerMixin(object):
         if filename:
             data['filename'] = filename
 
-        if show_only:
-            if show_only not in _job_status:
-                msg = ('unknown argument {} for `show_only` in `search`; '
-                       'must be one of {}'.format(show_only, _job_status))
+        if job_status:
+            if job_status not in _job_status:
+                msg = ('unknown argument {} for `job_status` in `search`; '
+                       'must be one of {}'.format(job_status, _job_status))
                 raise ValueError(msg)
-            data[show_only] = 1
+            data['job_status'] = job_status
 
         data.update(extra_query)
 
@@ -150,16 +153,20 @@ class JobRunnerMixin(object):
                 If given, return all results with exactly this filename.
                 Default is None.
 
-            show_only (str):
+            job_status (str):
                 If given, filter the results to only include the category of
                 job given by ``show_only``.  Allowable categories are:
 
-                    completed
-                    processing
-                    indexing
+                    under_review
+                    queued
                     failed
-                    manual_review
-                    unpurchased
+                    complete
+                    running
+                    parsing
+                    waiting
+                    parsing
+                    uploading
+
 
                 Default is ``None`` (perform no category filtering).
 
