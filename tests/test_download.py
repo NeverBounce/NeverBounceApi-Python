@@ -11,8 +11,8 @@ from neverbounce_sdk import urlfor, NeverBounceAPIException
 
 @pytest.fixture
 def client():
-    auth = 'secret key'
-    return neverbounce_sdk.client(auth=auth)
+    api_key = 'secret key'
+    return neverbounce_sdk.client(api_key=api_key)
 
 
 @pytest.fixture

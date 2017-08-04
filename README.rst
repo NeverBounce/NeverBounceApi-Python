@@ -43,8 +43,8 @@ with NeverBounce's email verification API version 4.  To get up and running, mak
 you have your API token on hand::
 
     import neverbounce_sdk
-    token = 'my secret API token'
-    client = neverbounce_sdk.client(auth=token)
+    api_key = 'my secret API token'
+    client = neverbounce_sdk.client(api_key=api_key)
 
 And now you're ready to use the client.  You can check your account
 information::
@@ -110,9 +110,9 @@ Behind the scenes the client uses ``requests``, and if you would like to
 explicitly provide a ``requests.Session``, you may do so::
 
     from requests import Session
-    token = 'my secret token'
+    api_key = 'my secret token'
     session = Session()
-    client = neverbounce_sdk.client(auth=token, session=session)
+    client = neverbounce_sdk.client(api_key=api_key, session=session)
 
 And all outgoing HTTP requests will be routed through the session object's
 ``request`` method, taking advantage of ``requests.Session``'s connection pooling.
@@ -125,7 +125,7 @@ be created.  Either way, a session associated with a client is **always**
 closed at the end of the context block. ::
 
     with neverbounce_sdk.client() as client:
-        client.auth = 'my secret token'
+        client.api_key = 'my secret token'
 
         # the client creates a session behind the scenes
         assert client.session is not None

@@ -13,32 +13,32 @@ class APICore(object):
     Core helpers for authenticating and interacting with the Neverbounce API
     """
 
-    def __init__(self, auth=None, session=None):
-        self.auth = auth
+    def __init__(self, api_key=None, session=None):
+        self.api_key = api_key
         self.session = session
 
     @property
-    def auth(self):
+    def api_key(self):
         """
         If self.session is set and self.auth is not, falls back to
         ``self.session.auth``.
         """
-        if self.session and not self._auth:
-            return self.session.auth
-        return self._auth
+        if self.session and not self._api_key:
+            return self.session.api_key
+        return self._api_key
 
-    @auth.setter
-    def auth(self, val):
+    @api_key.setter
+    def api_key(self, val):
         if val is None:
-            self._auth = None
+            self._api_key = None
         elif isinstance(val, StaticTokenAuth):
-            self._auth = val
+            self._api_key = val
         else:
-            self._auth = StaticTokenAuth(val)
+            self._api_key = StaticTokenAuth(val)
 
-    @auth.deleter
-    def auth(self):
-        self._auth = None
+    @api_key.deleter
+    def api_key(self):
+        self._api_key = None
 
     def _make_request(self, method, url, *args, **kwargs):
         """
@@ -54,7 +54,7 @@ class APICore(object):
         kwargs['headers'] = headers
 
         if not kwargs.get('auth'):
-            kwargs.update({'auth': self.auth})
+            kwargs.update({'auth': self.api_key})
         if self.session:
             return self.session.request(method, url, *args, **kwargs)
         return requests.request(method, url, *args, **kwargs)
@@ -89,8 +89,8 @@ class APICore(object):
 
         # if the problem is with authentication, rewrite the error message to
         # make more sense in the current context
-        if api_status == 'auth_failure' and not self.auth:
-            message = 'NeverBounceAPIClient.auth is not set'
+        if api_status == 'auth_failure' and not self.api_key:
+            message = 'NeverBounceAPIClient.api_key is not set'
 
         raise exc(message, execution_time)
 

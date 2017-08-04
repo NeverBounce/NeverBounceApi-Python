@@ -12,8 +12,8 @@ from neverbounce_sdk.bulk import _job_status
 
 @pytest.fixture
 def client():
-    auth = 'secret key'
-    return neverbounce_sdk.client(auth=auth)
+    api_key = 'secret key'
+    return neverbounce_sdk.client(api_key=api_key)
 
 
 def test_search(client, monkeypatch):
