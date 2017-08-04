@@ -66,3 +66,5 @@ target/
 *~
 **/.idea
 **/.DS_STORE
+
+.env
