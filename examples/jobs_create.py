@@ -1,11 +1,11 @@
 import neverbounce_sdk
 
 # Load api key from .env in project root
-with open (".env", "r") as dotenv:
-    token=dotenv.read().replace('\n', '')
+with open(".env", "r") as dotenv:
+    api_key = dotenv.read().replace('\n', '')
 
 # Create sdk client
-client = neverbounce_sdk.client(auth=token)
+client = neverbounce_sdk.client(api_key=api_key)
 
 # Create array of data
 inputData = [
@@ -22,5 +22,6 @@ inputData = [
 ]
 
 # Create Job
-resp = client.jobs_create(input=inputData, filename="Created from Python Wrapper.csv");
+resp = client.jobs_create(
+    input=inputData, filename="Created from Python Wrapper.csv")
 print(resp['job_id'])

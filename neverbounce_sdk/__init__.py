@@ -21,7 +21,11 @@ __all__ = (auth.__all__ +           # noqa: F405
            ['NeverBounceAPIClient', 'client'])
 
 
-class NeverBounceAPIClient(AccountMixin, SingleMixin, JobRunnerMixin, POEMixin, APICore):
+class NeverBounceAPIClient(AccountMixin,
+                           SingleMixin,
+                           JobRunnerMixin,
+                           POEMixin,
+                           APICore):
     pass
 
 
