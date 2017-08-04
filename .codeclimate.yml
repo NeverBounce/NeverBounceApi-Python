@@ -1,0 +1,17 @@
+---
+engines:
+  duplication:
+    enabled: false
+    config:
+      languages:
+      - python
+  fixme:
+    enabled: true
+  pep8:
+    enabled: true
+ratings:
+  paths:
+  - "neverbounce_sdk/**.py"
+exclude_paths:
+- tests/
+- examples/

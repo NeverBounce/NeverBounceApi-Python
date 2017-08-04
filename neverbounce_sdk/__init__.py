@@ -3,7 +3,6 @@ __author__ = "NeverBounce Team"
 __email__ = 'support@neverbounce.com'
 __version__ = '1.0.3'
 
-
 from .auth import *         # noqa: F403
 from .exceptions import *   # noqa: F403
 from .utils import *        # noqa: F403
@@ -11,8 +10,8 @@ from .utils import *        # noqa: F403
 from .account import AccountMixin
 from .bulk import JobRunnerMixin
 from .core import APICore
+from .poe import POEMixin
 from .single import SingleMixin
-
 
 __all__ = (auth.__all__ +           # noqa: F405
            exceptions.__all__ +     # noqa: F405
@@ -20,7 +19,11 @@ __all__ = (auth.__all__ +           # noqa: F405
            ['NeverBounceAPIClient', 'client'])
 
 
-class NeverBounceAPIClient(AccountMixin, SingleMixin, JobRunnerMixin, APICore):
+class NeverBounceAPIClient(AccountMixin,
+                           SingleMixin,
+                           JobRunnerMixin,
+                           POEMixin,
+                           APICore):
     pass
 
 
