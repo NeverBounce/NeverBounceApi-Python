@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+__author__ = "NeverBounce Team"
+__email__ = 'support@neverbounce.com'
+__version__ = '1.0.3'
+
 from .auth import *         # noqa: F403
 from .exceptions import *   # noqa: F403
 from .utils import *        # noqa: F403
@@ -8,10 +13,6 @@ from .core import APICore
 from .poe import POEMixin
 from .single import SingleMixin
 
-# -*- coding: utf-8 -*-
-__author__ = "NeverBounce Team"
-__email__ = 'support@neverbounce.com'
-__version__ = '1.0.3'
 __all__ = (auth.__all__ +           # noqa: F405
            exceptions.__all__ +     # noqa: F405
            utils.__all__ +          # noqa: F405
