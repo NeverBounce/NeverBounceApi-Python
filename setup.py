@@ -3,6 +3,7 @@
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
+from neverbounce_sdk import __version__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -11,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='neverbounce-sdk',
-    version='1.0.3',
+    version=__version__,
     description="Official Python SDK for the NeverBounce API",
     long_description=long_description,
     author="NeverBounce Team",
@@ -24,7 +25,7 @@ setup(
     ],
     license='MIT',
     zip_safe=False,
-    keywords=['neverbounce','api', 'email', 'verification','cleaning'],
+    keywords=['neverbounce', 'api', 'email', 'verification', 'cleaning'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
