@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "NeverBounce Team"
 __email__ = 'support@neverbounce.com'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 from .auth import *         # noqa: F403
 from .exceptions import *   # noqa: F403
