@@ -90,6 +90,7 @@ def test_client_auth_fallback_with_custom_session_present():
     assert client.api_key is custom_session.api_key
 
     custom_auth = StaticTokenAuth('different token!')
-    client = neverbounce_sdk.client(session=custom_session, api_key=custom_auth)
+    client = neverbounce_sdk.client(session=custom_session,
+                                    api_key=custom_auth)
     assert client.session is custom_session
     assert client.api_key is custom_auth
