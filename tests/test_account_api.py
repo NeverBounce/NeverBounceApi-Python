@@ -10,7 +10,7 @@ from neverbounce_sdk import urlfor
 @responses.activate
 def test_account_info():
     client = neverbounce_sdk.client()
-    client.auth = 'static key'
+    client.api_key = 'static key'
 
     # this is the exepcted response
     responses.add(responses.GET,

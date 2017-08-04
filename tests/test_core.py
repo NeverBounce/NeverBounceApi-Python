@@ -16,44 +16,44 @@ def test_client_function():
 def test_default_client_auth_is_None():
     """A newly created client must be configured with auth"""
     client = neverbounce_sdk.client()
-    assert client.auth is None
+    assert client.api_key is None
 
 
 def test_setting_auth_with_string():
-    """You may pass a string token directly to the NeverBounceAPIClient.auth
+    """You may pass a string api_key directly to the NeverBounceAPIClient.api_key
     property"""
     client = neverbounce_sdk.client()
-    # sets the StaticTokenAuth and auth.token
-    client.auth = 'this is a string!'
-    assert client.auth is not None
-    assert isinstance(client.auth, StaticTokenAuth)
-    assert client.auth.token == 'this is a string!'
+    # sets the StaticTokenAuth and auth.api_key
+    client.api_key = 'this is a string!'
+    assert client.api_key is not None
+    assert isinstance(client.api_key, StaticTokenAuth)
+    assert client.api_key.api_key == 'this is a string!'
 
 
 def test_setting_auth_with_StaticTokenAuth():
     """You may instantiate and pass a StaticTokenAuth object directly to the
-    NeverBounceAPIClient.auth property"""
+    NeverBounceAPIClient.api_key property"""
     client = neverbounce_sdk.client()
-    client.auth = StaticTokenAuth('secret token')
-    assert client.auth is not None
-    assert isinstance(client.auth, StaticTokenAuth)
-    assert client.auth.token == 'secret token'
+    client.api_key = StaticTokenAuth('secret token')
+    assert client.api_key is not None
+    assert isinstance(client.api_key, StaticTokenAuth)
+    assert client.api_key.api_key == 'secret token'
 
 
 def test_clearing_client_auth():
-    """You may clear the NeverBounceAPIClient.auth propery by setting it to
+    """You may clear the NeverBounceAPIClient.api_key propery by setting it to
     None or the ``del`` statement; they are equivalent"""
     client = neverbounce_sdk.client()
     # by directly setting the property to None
-    client.auth = 'something'
-    assert client.auth is not None
-    client.auth = None
-    assert client.auth is None
+    client.api_key = 'something'
+    assert client.api_key is not None
+    client.api_key = None
+    assert client.api_key is None
     # by "deleting" the property
-    client.auth = 'something'
-    assert client.auth is not None
-    del client.auth
-    assert client.auth is None
+    client.api_key = 'something'
+    assert client.api_key is not None
+    del client.api_key
+    assert client.api_key is None
 
 
 def test_default_client_session_is_none():
@@ -83,13 +83,13 @@ def test_client_auth_fallback_with_custom_session_present():
     """The NeverBounceAPIClient will fall back to using a session auth if a
     session is present but no auth"""
     custom_session = Session()
-    custom_session.auth = StaticTokenAuth('secret token!')
+    custom_session.api_key = StaticTokenAuth('secret token!')
     client = neverbounce_sdk.client(session=custom_session)
     # is: should be the same object
     assert client.session is custom_session
-    assert client.auth is custom_session.auth
+    assert client.api_key is custom_session.api_key
 
     custom_auth = StaticTokenAuth('different token!')
-    client = neverbounce_sdk.client(session=custom_session, auth=custom_auth)
+    client = neverbounce_sdk.client(session=custom_session, api_key=custom_auth)
     assert client.session is custom_session
-    assert client.auth is custom_auth
+    assert client.api_key is custom_auth

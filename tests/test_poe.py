@@ -15,7 +15,7 @@ def test_poe_confirm():
                   status=200,
                   json={'status': 'success'})
 
-    with neverbounce_sdk.client(auth='static key') as client:
+    with neverbounce_sdk.client(api_key='static key') as client:
         info = client.poe_confirm(
             email='support@neverbounce.com',
             transaction_id='NBPOE-TXN-5942940c09669',
