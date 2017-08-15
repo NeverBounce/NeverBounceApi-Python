@@ -23,5 +23,11 @@ inputData = [
 
 # Create Job
 resp = client.jobs_create(
-    input=inputData, filename="Created from Python Wrapper.csv")
+    input=inputData,
+    filename="Created from Python Wrapper.csv",
+    # auto_parse=True,
+    # auto_start=True,
+    # as_sample=False,
+    # from_url=False
+    )
 print(resp['job_id'])

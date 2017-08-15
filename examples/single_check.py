@@ -8,5 +8,10 @@ with open(".env", "r") as dotenv:
 client = neverbounce_sdk.client(api_key=api_key)
 
 # Verify email
-verification = client.single_check(email='support@neverbounce.com')
+verification = client.single_check(
+  email='support@neverbounce.com',
+  address_info=True,
+  credits_info=True,
+  timeout=10  # Timeout in seconds
+)
 print("Result: " + verification['result'])
