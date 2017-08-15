@@ -125,7 +125,7 @@ def test_parse(client):
 
     client.jobs_parse(123)
     called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
-    expected_args = dict(job_id=123, auto_start=1)
+    expected_args = dict(job_id=123, auto_start=0)
     for k, v in expected_args.items():
         assert called_with[k] == v
 

@@ -260,7 +260,7 @@ class JobRunnerMixin(object):
 
         return resp.json()
 
-    def jobs_parse(self, job_id, auto_start=True):
+    def jobs_parse(self, job_id, auto_start=False):
         """
         This endpoint allows you to parse a job created with auto_parse
         disabled. You cannot reparse a list once it's been parsed.
