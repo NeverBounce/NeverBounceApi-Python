@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='neverbounce-sdk',
-    version='4.0.0',
+    version='4.1.0',
     description="Official Python SDK for the NeverBounce API",
     long_description=long_description,
     author="NeverBounce Team",
