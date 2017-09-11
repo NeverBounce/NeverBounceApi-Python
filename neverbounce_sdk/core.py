@@ -5,7 +5,7 @@ import requests
 
 from . import __version__ as VERSION
 from .auth import StaticTokenAuth
-from .exceptions import _status_to_exception, NeverBounceAPIException
+from .exceptions import _status_to_exception, GeneralException
 
 
 class APICore(object):
@@ -63,15 +63,33 @@ class APICore(object):
         """Checks a response for errors and throws if they any present"""
         # first check that there were no errors on the wire
         resp.raise_for_status()
-        data = resp.json()
+
+        try:
+            data = resp.json()
+        except Exception as e:
+            raise GeneralException('The response from NeverBounce was unable '
+                                   + 'to be parsed as json. Try the request '
+                                   + 'again, if this error persists'
+                                   + ' let us know at support@neverbounce.com.'
+                                   + '\n\n(Internal error)')
 
         # now make sure we have a sensible response
         try:
             api_status = data['status']
+            if api_status != 'success':
+                api_message = data['message']
         except KeyError:
             # no status field in the API's return object
             # complain about it cause that's weird
-            raise NeverBounceAPIException(resp.json())
+            raise GeneralException('The response from server is incomplete. '
+                                   + 'Either a status code was not included '
+                                   + 'or the an error was returned without an '
+                                   + 'error message. Try the request again, '
+                                   + 'if this error persists let us know at '
+                                   + 'support@neverbounce.com.'
+                                   + '\n\n(Internal error [status '
+                                   + str(resp.status_code) + ': '
+                                   + resp.text + '])')
 
         # if everything is good, we're done
         if api_status == 'success':
@@ -82,15 +100,22 @@ class APICore(object):
         except KeyError:
             # this is an uknown failure from upstream; letting the KeyError
             # propgate would be weird to the user: use a generic error
-            exc = NeverBounceAPIException
+            exc = GeneralException
 
         message = data.get('message')
         execution_time = data.get('execution_time')
 
         # if the problem is with authentication, rewrite the error message to
         # make more sense in the current context
-        if api_status == 'auth_failure' and not self.api_key:
-            message = 'NeverBounceAPIClient.api_key is not set'
+        if api_status == 'auth_failure':
+            message = ('We were unable to authenticate your request. '
+                       + 'Make sure NeverBounceAPIClient.api_key is set. '
+                       + 'The following information was supplied: '
+                       + '{0}\n\n(auth_failure)'.format(api_message))
+        else:
+            message = ('We were unable to complete your request. '
+                       + 'The following information was supplied: '
+                       + '{0}\n\n({1})'.format(api_message, api_status))
 
         raise exc(message, execution_time)
 

@@ -6,28 +6,47 @@ import responses
 
 import neverbounce_sdk
 from neverbounce_sdk import (urlfor,
-                             NeverBounceAPIException)
+                             GeneralException)
 from neverbounce_sdk.exceptions import _status_to_exception
 
 
-@pytest.mark.parametrize('exc', list(_status_to_exception))
+@pytest.mark.parametrize('err', list(_status_to_exception))
 @responses.activate
-def test_account_info(exc):
+def test_account_info(err):
     # this is the exepcted response: we've picked a random simple API target
     # just so we can mock out some exceptions and see how the client handles
     # them
     responses.add(responses.GET,
                   urlfor('account', 'info'),
                   status=200,
-                  json={'status': exc, 'message': 'the-message'})
+                  json={'status': err, 'message': 'the-message'})
 
-    with pytest.raises(_status_to_exception[exc]) as raised_exc:
+    with pytest.raises(_status_to_exception[err]) as exc:
         neverbounce_sdk.client().account_info()
 
-        if exc == 'auth_failure':
-            assert 'NeverBounceAPIClient.auth is not set' in raised_exc.message
-        else:
-            assert 'the-message' in raised_exc.message
+    if err == 'auth_failure':
+        assert 'We were unable to authenticate your request' in exc.value.message
+    else:
+        assert 'We were unable to complete your request.' in exc.value.message
+        assert err in exc.value.message
+
+
+@responses.activate
+def test_non_json_response():
+    responses.add(responses.GET,
+                  urlfor('account', 'info'),
+                  status=200,
+                  # empty dict; client should complain that there's no 'status'
+                  # key
+                  body='Not Json')
+
+    with pytest.raises(GeneralException) as exc:
+        neverbounce_sdk.client().account_info()
+    assert ('The response from NeverBounce was unable '
+            + 'to be parsed as json. Try the request '
+            + 'again, if this error persists'
+            + ' let us know at support@neverbounce.com.'
+            + '\n\n(Internal error)') in exc.value.message
 
 
 @responses.activate
@@ -37,7 +56,15 @@ def test_weird_response_no_status_raises():
                   status=200,
                   # empty dict; client should complain that there's no 'status'
                   # key
-                  json={'message': None})
+                  json={'message': 'Something went wrong'})
 
-    with pytest.raises(NeverBounceAPIException):
+    with pytest.raises(GeneralException) as exc:
         neverbounce_sdk.client().account_info()
+    assert ('The response from server is incomplete. '
+            + 'Either a status code was not included '
+            + 'or the an error was returned without an '
+            + 'error message. Try the request again, '
+            + 'if this error persists let us know at '
+            + 'support@neverbounce.com.'
+            + '\n\n(Internal error [status 200: '
+            + '{"message": "Something went wrong"}])') in exc.value.message

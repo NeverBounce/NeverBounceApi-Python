@@ -2,48 +2,45 @@
 NeverBounce API exceptions and warnings
 """
 
-__all__ = ['NeverBounceAPIException',
-           'UnsupportedMethod',
+__all__ = ['GeneralException',
            'AuthFailure',
-           'TemporarilyUnavailable',
            'ThrottleTriggered',
            'BadReferrer']
 
 
-class NeverBounceAPIException(Exception):
-    """Base class for NeverBounce API errors"""
+class GeneralException(Exception):
+    """
+    A non recoverable API error occurred check the message for details
+    """
 
     def __init__(self, message, execution_time=None):
         self.message = message
         self.execution_time = execution_time
 
 
-class UnsupportedMethod(NeverBounceAPIException):
-    """The API supports only the GET and POST HTTP verbs"""
+class AuthFailure(GeneralException):
+    """
+    The API credentials used are bad, have you reset them recently?
+    """
 
 
-class AuthFailure(NeverBounceAPIException):
-    """The request couldn't be authenticated; check the API key and make sure
-    it's being sent correctly"""
+class ThrottleTriggered(GeneralException):
+    """
+    Too many requests in a short amount of time, try again shortly or adjust
+    your rate limit settings for this application in the dashboard
+    """
 
 
-class TemporarilyUnavailable(NeverBounceAPIException):
-    """An internal error has occurred; typically this indicates a service
-    interruption"""
-
-
-class ThrottleTriggered(NeverBounceAPIException):
-    """The request was rejected due to rate limiting; try again shortly"""
-
-
-class BadReferrer(NeverBounceAPIException):
-    """The referrer for this request is not trusted"""
+class BadReferrer(GeneralException):
+    """
+    The script is being used from an unauthorized source, you may need to
+    adjust your app's settings to allow it to be used from here
+    """
 
 
 _status_to_exception = {
-    'general_failure': NeverBounceAPIException,
+    'general_failure': GeneralException,
     'auth_failure': AuthFailure,
-    'temp_unavail': TemporarilyUnavailable,
     'throttle_triggered': ThrottleTriggered,
     'bad_referrer': BadReferrer
 }

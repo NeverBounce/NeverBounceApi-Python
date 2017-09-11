@@ -6,7 +6,7 @@ import pytest
 import responses
 
 import neverbounce_sdk
-from neverbounce_sdk import urlfor, NeverBounceAPIException
+from neverbounce_sdk import urlfor, GeneralException
 
 
 @pytest.fixture
@@ -51,9 +51,10 @@ def test_download_upstream_error(client, tempfile):
     responses.add(responses.POST,
                   urlfor('jobs', 'download'),
                   status=200,
-                  json={'status': 'failure'})
+                  json={'status': 'general_failure',
+                        'message': 'Something went wrong'})
 
-    with pytest.raises(NeverBounceAPIException):
+    with pytest.raises(GeneralException):
         client.jobs_download(123, tempfile)
 
 
