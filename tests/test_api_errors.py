@@ -25,7 +25,8 @@ def test_account_info(err):
         neverbounce_sdk.client().account_info()
 
     if err == 'auth_failure':
-        assert 'We were unable to authenticate your request' in exc.value.message
+        assert 'We were unable to authenticate your request'\
+               in exc.value.message
     else:
         assert 'We were unable to complete your request.' in exc.value.message
         assert err in exc.value.message
