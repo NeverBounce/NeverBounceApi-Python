@@ -67,11 +67,11 @@ class APICore(object):
         try:
             data = resp.json()
         except Exception as e:
-            raise GeneralException('The response from NeverBounce was unable '
-                                   + 'to be parsed as json. Try the request '
-                                   + 'again, if this error persists'
-                                   + ' let us know at support@neverbounce.com.'
-                                   + '\n\n(Internal error)')
+            raise GeneralException('The response from NeverBounce was ' +
+                                   'unable to be parsed as json. Try the ' +
+                                   'request again, if this error persists ' +
+                                   'let us know at support@neverbounce.com.' +
+                                   '\n\n(Internal error)')
 
         # now make sure we have a sensible response
         try:
@@ -81,15 +81,15 @@ class APICore(object):
         except KeyError:
             # no status field in the API's return object
             # complain about it cause that's weird
-            raise GeneralException('The response from server is incomplete. '
-                                   + 'Either a status code was not included '
-                                   + 'or the an error was returned without an '
-                                   + 'error message. Try the request again, '
-                                   + 'if this error persists let us know at '
-                                   + 'support@neverbounce.com.'
-                                   + '\n\n(Internal error [status '
-                                   + str(resp.status_code) + ': '
-                                   + resp.text + '])')
+            raise GeneralException('The response from server is incomplete. ' +
+                                   'Either a status code was not included ' +
+                                   'or the an error was returned without an ' +
+                                   'error message. Try the request again, ' +
+                                   'if this error persists let us know at ' +
+                                   'support@neverbounce.com.' +
+                                   '\n\n(Internal error [status ' +
+                                   str(resp.status_code) + ': ' +
+                                   resp.text + '])')
 
         # if everything is good, we're done
         if api_status == 'success':
@@ -108,14 +108,14 @@ class APICore(object):
         # if the problem is with authentication, rewrite the error message to
         # make more sense in the current context
         if api_status == 'auth_failure':
-            message = ('We were unable to authenticate your request. '
-                       + 'Make sure NeverBounceAPIClient.api_key is set. '
-                       + 'The following information was supplied: '
-                       + '{0}\n\n(auth_failure)'.format(api_message))
+            message = ('We were unable to authenticate your request. ' +
+                       'Make sure NeverBounceAPIClient.api_key is set. ' +
+                       'The following information was supplied: ' +
+                       '{0}\n\n(auth_failure)'.format(api_message))
         else:
-            message = ('We were unable to complete your request. '
-                       + 'The following information was supplied: '
-                       + '{0}\n\n({1})'.format(api_message, api_status))
+            message = ('We were unable to complete your request. ' +
+                       'The following information was supplied: ' +
+                       '{0}\n\n({1})'.format(api_message, api_status))
 
         raise exc(message, execution_time)
 
