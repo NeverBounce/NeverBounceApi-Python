@@ -14,9 +14,6 @@ Welcome to NeverBounce's Python SDK!  We hope that it will aid you in consuming
 our service.  Please report any bugs to the github issue tracker and make sure
 you read the documentation before use.
 
-.. pull-quote::
-  This library is for use with NeverBounce's V4 API which is currently in beta
-
 Installation
 ------------
 
