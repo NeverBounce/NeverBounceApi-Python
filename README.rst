@@ -35,12 +35,14 @@ mode.
 Usage
 -----
 
+    **The API username and secret key used to authenticate V3 API requests will not work to authenticate V4 API requests.** If you are attempting to authenticate your request with the 8 character username or 12-16 character secret key the request will return an `auth_failure` error. The API key used for the V4 API will look like the following: `secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`. To create new V4 API credentials please go [here](https://app.neverbounce.com/apps/custom-integration/new).
+
 The NeverBounce Python SDK provides a simple interface by which to interact
 with NeverBounce's email verification API version 4.  To get up and running, make sure
 you have your API token on hand::
 
     import neverbounce_sdk
-    api_key = 'my secret API token'
+    api_key = 'secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     client = neverbounce_sdk.client(api_key=api_key)
 
 And now you're ready to use the client.  You can check your account
@@ -107,7 +109,7 @@ Behind the scenes the client uses ``requests``, and if you would like to
 explicitly provide a ``requests.Session``, you may do so::
 
     from requests import Session
-    api_key = 'my secret token'
+    api_key = 'secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     session = Session()
     client = neverbounce_sdk.client(api_key=api_key, session=session)
 
@@ -122,7 +124,7 @@ be created.  Either way, a session associated with a client is **always**
 closed at the end of the context block. ::
 
     with neverbounce_sdk.client() as client:
-        client.api_key = 'my secret token'
+        client.api_key = 'secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 
         # the client creates a session behind the scenes
         assert client.session is not None
