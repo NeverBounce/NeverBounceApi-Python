@@ -249,7 +249,7 @@ class JobRunnerMixin(object):
         data = dict(input=input,
                     auto_parse=int(auto_parse),
                     auto_start=int(auto_start),
-                    as_sample=int(as_sample))
+                    run_sample=int(as_sample))
 
         data['input_location'] = 'remote_url' if from_url else 'supplied'
         if filename is not None:
