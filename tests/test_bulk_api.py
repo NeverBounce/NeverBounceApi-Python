@@ -100,7 +100,7 @@ def test_create(client):
 
     raw_args = dict(input=['test@example.com'],
                     input_location='supplied',
-                    auto_parse=0, auto_start=0, as_sample=0)
+                    auto_parse=0, auto_start=0, run_sample=0)
 
     client.jobs_create(['test@example.com'])
     called_with = json.loads(responses.calls[0].request.body.decode('UTF-8'))
