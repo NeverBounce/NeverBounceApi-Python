@@ -53,7 +53,7 @@ information::
 
 You can verify single emails::
 
-    resp = client.single_verify('test@example.com')
+    resp = client.single_check('test@example.com')
     resp['result']              # 'invalid'
     resp['execution_time']      # 285
 
