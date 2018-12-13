@@ -28,7 +28,7 @@ Pygments==2.2.0
 pytest==3.1.3
 pytest-cov==2.5.1
 pytz==2017.2
-requests==2.18.1
+requests==2.20.0
 requests-toolbelt==0.8.0
 responses==0.5.1
 simplegeneric==0.8.1
@@ -40,6 +40,6 @@ tox==2.7.0
 tqdm==4.14.0
 traitlets==4.3.2
 twine==1.9.1
-urllib3==1.21.1
+urllib3==1.23
 virtualenv==15.1.0
 wcwidth==0.1.7
