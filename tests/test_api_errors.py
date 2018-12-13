@@ -26,10 +26,10 @@ def test_account_info(err):
 
     if err == 'auth_failure':
         assert 'We were unable to authenticate your request'\
-               in exc.value.message
+               in str(exc.value)
     else:
-        assert 'We were unable to complete your request.' in exc.value.message
-        assert err in exc.value.message
+        assert 'We were unable to complete your request.' in str(exc.value)
+        assert err in str(exc.value)
 
 
 @responses.activate
@@ -47,7 +47,7 @@ def test_non_json_response():
             + 'to be parsed as json. Try the request '
             + 'again, if this error persists'
             + ' let us know at support@neverbounce.com.'
-            + '\n\n(Internal error)') in exc.value.message
+            + '\\n\\n(Internal error)') in str(exc.value)
 
 
 @responses.activate
@@ -67,5 +67,5 @@ def test_weird_response_no_status_raises():
             + 'error message. Try the request again, '
             + 'if this error persists let us know at '
             + 'support@neverbounce.com.'
-            + '\n\n(Internal error [status 200: '
-            + '{"message": "Something went wrong"}])') in exc.value.message
+            + '\\n\\n(Internal error [status 200: '
+            + '{"message": "Something went wrong"}])') in str(exc.value)
