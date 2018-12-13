@@ -66,7 +66,7 @@ class APICore(object):
 
         try:
             data = resp.json()
-        except Exception as e:
+        except Exception:
             raise GeneralException('The response from NeverBounce was ' +
                                    'unable to be parsed as json. Try the ' +
                                    'request again, if this error persists ' +
