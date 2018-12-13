@@ -14,8 +14,8 @@ class GeneralException(Exception):
     """
 
     def __init__(self, message, execution_time=None):
-        self.message = message
         self.execution_time = execution_time
+        super(GeneralException, self).__init__(message, execution_time)
 
 
 class AuthFailure(GeneralException):
