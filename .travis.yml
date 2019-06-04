@@ -3,10 +3,6 @@ matrix:
   include:
   - python: 2.7
     env: TOXENV=py27
-  - python: 3.3
-    env: TOXENV=py33
-  - python: 3.4
-    env: TOXENV=py34
   - python: 3.5
     env: TOXENV=py35
   - python: 3.6
@@ -26,5 +22,3 @@ install:
 script: tox
 notifications:
   email: false
-  slack:
-    secure: dXqqWrZYZh44jMYZMy21vpU5KqHcYhjIO90yrJH3cyuWaWRMMtPe8CIgOBHXCmPsx6BAa0VD5T/DFVvtU5Vrs2R1rFcZW0rfXElpaHHx43Kkx893lY8QjEy713syB+QSwgO0gD1Js9Ri03sAg628zO8dDIXMCPYth6kL3oROj8xgvSmjQbASYNZz6FQPzvodZqWLe0tcbxvpyizJd6eHZJmEqXcJzFHl1VqLkTd9BoKuvCPDbwzJsRlGbt7u1H7Ae/p9edBK2flwX7lJChqKLk4V3urjNv1vXmuo8Cfwx5s6sGvIaZG5OazsAcxhghJE0HSFXCz2TXBj7hR1n4FRC1NnG7jH2R8F6hnUUYc9NAzTxVzYYYFLE8t622hKYVq9Pt0Seo0Dc0UGo3SQJjqBNuDaZL18wx0fkBh4x7w1rsetyIYRUvq2bKlyRgMVw6MLU+1Lu+b//4hplH7gi1PIowfZ3lbBzZQsbMyCraAXiW5p8OG9LIV+AZnqdoazQGMfOpCiB4alPtb4lBDbiuGkF6L64iAiYsuPrLbzRQZui8a+o6NyKsEt/6UHt7+kqLI4PC03nd60qN4Hb9p9w/VpeTZ+WmM0I/bpbAa6dI4upOwia2f6rfUAaHe9VJ4jMr9Q8XNTCYB/mx2+S2Nm81jU+mH0NYlSL3/CC3AtehfKDRM=
