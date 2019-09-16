@@ -19,8 +19,11 @@ class SingleMixin(object):
                 the address. Default is ``False``.
             credits_info (bool): If ``True``, return extra information about
                 the account and how many credits remain.  Default is ``False``.
-            timeout (int): Set a timeout for the request.  Default
-                is ``30``.
+            timeout (int): Set a timeout for the verification. Once this limit
+                is reached the API will give up verifying the email and return
+                it as an "Unknown". This is enforced by the API, NOT the local
+                request library (for setting request timeouts use the
+                ``timeout`` parameter on the client). Default is ``30``.
 
         Returns:
             A ``dict``
