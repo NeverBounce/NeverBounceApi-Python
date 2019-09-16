@@ -74,7 +74,6 @@ class APICore(object):
         if self.timeout:
             kwargs['timeout'] = self.timeout
 
-
         if not kwargs.get('auth'):
             kwargs.update({'auth': self.api_key})
         if self.session:
