@@ -99,7 +99,7 @@ def test_client_auth_fallback_with_custom_session_present():
 def test_default_client_timeout_is_default():
     """A newly created client must be configured with default timeout"""
     client = neverbounce_sdk.client()
-    assert client.timeout is 30
+    assert client.timeout == 30
 
 
 def test_setting_timeout_with_None():
@@ -115,4 +115,4 @@ def test_setting_timeout_with_integer():
     property"""
     client = neverbounce_sdk.client()
     client.timeout = 5
-    assert client.timeout is 5
+    assert client.timeout == 5
