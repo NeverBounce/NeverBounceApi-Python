@@ -13,9 +13,10 @@ class APICore(object):
     Core helpers for authenticating and interacting with the Neverbounce API
     """
 
-    def __init__(self, api_key=None, session=None):
+    def __init__(self, api_key=None, session=None, timeout=30):
         self.api_key = api_key
         self.session = session
+        self.timeout = timeout
 
     @property
     def api_key(self):
@@ -40,6 +41,23 @@ class APICore(object):
     def api_key(self):
         self._api_key = None
 
+    @property
+    def timeout(self):
+        if self.session and not self._timeout:
+            return self.session.timeout
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, val):
+        if val is None:
+            self._timeout = None
+        else:
+            self._timeout = val
+
+    @timeout.deleter
+    def timeout(self):
+        self._timeout = None
+
     def _make_request(self, method, url, *args, **kwargs):
         """
         Looks for an underlying Session and uses that if available, else
@@ -52,6 +70,9 @@ class APICore(object):
         user_agent = 'NeverBounceAPI-Python/{}'.format(VERSION)
         headers.update({'User-Agent': user_agent})
         kwargs['headers'] = headers
+
+        if self.timeout:
+            kwargs['timeout'] = self.timeout
 
         if not kwargs.get('auth'):
             kwargs.update({'auth': self.api_key})

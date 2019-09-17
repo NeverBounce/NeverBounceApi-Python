@@ -43,7 +43,7 @@ you have your API token on hand::
 
     import neverbounce_sdk
     api_key = 'secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-    client = neverbounce_sdk.client(api_key=api_key)
+    client = neverbounce_sdk.client(api_key=api_key,timeout=30)
 
 And now you're ready to use the client.  You can check your account
 information::

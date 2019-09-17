@@ -94,3 +94,25 @@ def test_client_auth_fallback_with_custom_session_present():
                                     api_key=custom_auth)
     assert client.session is custom_session
     assert client.api_key is custom_auth
+
+
+def test_default_client_timeout_is_default():
+    """A newly created client must be configured with default timeout"""
+    client = neverbounce_sdk.client()
+    assert client.timeout == 30
+
+
+def test_setting_timeout_with_None():
+    """You may set timeout to None in the NeverBounceAPIClient.timeout
+    property"""
+    client = neverbounce_sdk.client()
+    client.timeout = None
+    assert client.timeout is None
+
+
+def test_setting_timeout_with_integer():
+    """You may set timeout to an integer in the NeverBounceAPIClient.timeout
+    property"""
+    client = neverbounce_sdk.client()
+    client.timeout = 5
+    assert client.timeout == 5
