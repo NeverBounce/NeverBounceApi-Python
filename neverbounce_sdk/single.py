@@ -10,6 +10,7 @@ class SingleMixin(object):
     def single_check(self, email,
                      address_info=False,
                      credits_info=False,
+                     historical_data=True,
                      timeout=30):
         """Provides verification for a single email.
 
@@ -19,6 +20,8 @@ class SingleMixin(object):
                 the address. Default is ``False``.
             credits_info (bool): If ``True``, return extra information about
                 the account and how many credits remain.  Default is ``False``.
+            historical_data (bool): If ``True``, return extra information about
+                historical data.  Default is ``True``.
             timeout (int): Set a timeout for the verification. Once this limit
                 is reached the API will give up verifying the email and return
                 it as an "Unknown". This is enforced by the API, NOT the local
@@ -37,6 +40,7 @@ class SingleMixin(object):
                       address_info=int(address_info),
                       credits_info=int(credits_info),
                       timeout=timeout)
+        params['request_meta_data[leverage_historical_data]'] = int(historical_data)
         resp = self._make_request('GET', endpoint, params=params)
         self._check_response(resp)
         return resp.json()

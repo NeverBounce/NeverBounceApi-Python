@@ -16,7 +16,7 @@ class AccountMixin(object):
         See also:
             https://developers.neverbounce.com/v4.0/reference#account-info
         """
-        endpoint = urlfor('account', 'info')
+        endpoint = urlfor('account', 'info', api_version=self.api_version)
         resp = self._make_request('GET', endpoint)
         self._check_response(resp)
         return resp.json()

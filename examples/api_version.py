@@ -7,12 +7,6 @@ with open(".env", "r") as dotenv:
 # Create sdk client
 client = neverbounce_sdk.client(api_key=api_key, api_version='v4.1')
 
-# Verify email
-verification = client.single_check(
-    email='support@neverbounce.com',
-    address_info=True,
-    credits_info=True,
-    historical_data=False,
-    timeout=10  # Timeout in seconds
-)
-print(verification)
+# Get account info
+info = client.account_info()
+print(info)

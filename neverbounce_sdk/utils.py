@@ -12,7 +12,7 @@ API_ROOT = 'https://api.neverbounce.com'
 API_VERSION = 'v4'
 
 
-def urlfor(*parts):
+def urlfor(*parts, api_version=API_VERSION):
     """Returns the API endpoint base url (i.e. does not handle URL params)"""
     endpoint = '/'.join(parts)
-    return '{}/{}/{}'.format(API_ROOT, API_VERSION, endpoint)
+    return '{}/{}/{}'.format(API_ROOT, api_version, endpoint)

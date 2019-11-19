@@ -3,7 +3,7 @@ Core API support methods
 """
 import requests
 
-from . import __version__ as VERSION
+from . import __version__ as VERSION, API_VERSION
 from .auth import StaticTokenAuth
 from .exceptions import _status_to_exception, GeneralException
 
@@ -13,7 +13,8 @@ class APICore(object):
     Core helpers for authenticating and interacting with the Neverbounce API
     """
 
-    def __init__(self, api_key=None, session=None, timeout=30):
+    def __init__(self, api_key=None, session=None, timeout=30, api_version=API_VERSION):
+        self.api_version = api_version
         self.api_key = api_key
         self.session = session
         self.timeout = timeout

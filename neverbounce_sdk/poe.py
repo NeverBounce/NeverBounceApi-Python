@@ -24,7 +24,7 @@ class POEMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#widget-poe-confirm
         """
-        endpoint = urlfor('poe', 'confirm')
+        endpoint = urlfor('poe', 'confirm', api_version=self.api_version)
         params = dict(email=email,
                       transaction_id=transaction_id,
                       confirmation_token=confirmation_token,
