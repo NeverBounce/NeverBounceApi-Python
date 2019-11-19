@@ -20,8 +20,8 @@ class SingleMixin(object):
                 the address. Default is ``False``.
             credits_info (bool): If ``True``, return extra information about
                 the account and how many credits remain.  Default is ``False``.
-            historical_data (bool): If ``True``, return extra information about
-                historical data.  Default is ``True``.
+            historical_data (bool): If ``True``, return historical data.
+                Default is ``True``.
             timeout (int): Set a timeout for the verification. Once this limit
                 is reached the API will give up verifying the email and return
                 it as an "Unknown". This is enforced by the API, NOT the local
