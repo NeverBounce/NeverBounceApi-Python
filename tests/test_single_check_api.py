@@ -37,7 +37,7 @@ def test_single_check_with_specific_version():
                   status=200,
                   json={'status': 'success'})
 
-    with neverbounce_sdk.client(api_key='static key', api_version="v4.1") as client:
+    with neverbounce_sdk.client(api_key='abc', api_version="v4.1") as client:
         info = client.single_check('test@example.com', credits_info=True)
 
     assert info == {'status': 'success'}
@@ -48,5 +48,5 @@ def test_single_check_with_specific_version():
                      'address_info=0',
                      'credits_info=1',
                      'timeout=30',
-                     'key=static+key'):
+                     'key=abc'):
         assert urlchunk in url
