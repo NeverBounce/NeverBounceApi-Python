@@ -13,7 +13,11 @@ class APICore(object):
     Core helpers for authenticating and interacting with the Neverbounce API
     """
 
-    def __init__(self, api_key=None, session=None, timeout=30, api_version=API_VERSION):
+    def __init__(self,
+                 api_key=None,
+                 session=None,
+                 timeout=30,
+                 api_version=API_VERSION):
         self.api_version = api_version
         self.api_key = api_key
         self.session = session

@@ -40,7 +40,8 @@ class SingleMixin(object):
                       address_info=int(address_info),
                       credits_info=int(credits_info),
                       timeout=timeout)
-        params['request_meta_data[leverage_historical_data]'] = int(historical_data)
+        historical_data_key = 'request_meta_data[leverage_historical_data]'
+        params[historical_data_key] = int(historical_data)
         resp = self._make_request('GET', endpoint, params=params)
         self._check_response(resp)
         return resp.json()
