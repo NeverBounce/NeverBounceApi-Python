@@ -1,4 +1,4 @@
-from .utils import urlfor
+from .utils import urlforversion
 
 __all__ = ['JobRunnerMixin']
 
@@ -116,7 +116,7 @@ class JobRunnerMixin(object):
 
         data.update(extra_query)
 
-        endpoint = urlfor('jobs', 'search', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'search')
         resp = self._make_request('GET', endpoint, params=data)
         self._check_response(resp)
         return resp.json()
@@ -130,7 +130,7 @@ class JobRunnerMixin(object):
 
         data.update(extra_query)
 
-        endpoint = urlfor('jobs', 'results', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'results')
         resp = self._make_request('GET', endpoint, params=data)
         self._check_response(resp)
         return resp.json()
@@ -244,7 +244,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-create
         """
-        endpoint = urlfor('jobs', 'create', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'create')
 
         data = dict(input=input,
                     auto_parse=int(auto_parse),
@@ -280,7 +280,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-parse
         """
-        endpoint = urlfor('jobs', 'parse', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'parse')
         data = dict(job_id=job_id, auto_start=int(auto_start))
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
@@ -307,7 +307,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-start
         """
-        endpoint = urlfor('jobs', 'start', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'start')
         data = dict(job_id=job_id, run_sample=int(run_sample))
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
@@ -328,7 +328,7 @@ class JobRunnerMixin(object):
         See also:
             https://developers.neverbounce.com/v4.0/reference#jobs-status
         """
-        endpoint = urlfor('jobs', 'status', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'status')
         resp = self._make_request('GET', endpoint, params=dict(job_id=job_id))
         self._check_response(resp)
         return resp.json()
@@ -476,7 +476,7 @@ class JobRunnerMixin(object):
             'spooled': 'LINEFEED_0A'       # \n\r
         })
 
-        endpoint = urlfor('jobs', 'download', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'download')
         # the return val is (possibly) streaming; remember to set stream
         resp = self._make_request('POST', endpoint, json=data, stream=True)
 
@@ -501,7 +501,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-delete
         """
-        endpoint = urlfor('jobs', 'delete', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'jobs', 'delete')
         resp = self._make_request('GET', endpoint, params=dict(job_id=job_id))
         self._check_response(resp)
         return resp.json()

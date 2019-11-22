@@ -1,7 +1,7 @@
 """
 API support for endpoints located at API_ROOT/account
 """
-from .utils import urlfor
+from .utils import urlforversion
 
 
 class AccountMixin(object):
@@ -16,7 +16,7 @@ class AccountMixin(object):
         See also:
             https://developers.neverbounce.com/v4.0/reference#account-info
         """
-        endpoint = urlfor('account', 'info', api_version=self.api_version)
+        endpoint = urlforversion(self.api_version, 'account', 'info')
         resp = self._make_request('GET', endpoint)
         self._check_response(resp)
         return resp.json()

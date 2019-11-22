@@ -1,7 +1,7 @@
 """
 API support for endpoints located at API_ROOT/single
 """
-from .utils import urlfor
+from .utils import urlforversion
 
 
 class SingleMixin(object):
@@ -34,7 +34,7 @@ class SingleMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#single-check
         """
-        endpoint = urlfor('single', 'check')
+        endpoint = urlforversion(self.api_version, 'single', 'check')
         params = dict(email=email,
                       # convert boolean flags to 0 or 1
                       address_info=int(address_info),
