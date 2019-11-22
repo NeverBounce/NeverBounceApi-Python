@@ -29,6 +29,7 @@ def test_single_check():
                      'key=static+key'):
         assert urlchunk in url
 
+
 @responses.activate
 def test_single_check_with_specific_version():
     # this is the exepcted response
