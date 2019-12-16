@@ -4,14 +4,14 @@ Tests the POE endpoints
 import responses
 
 import neverbounce_sdk
-from neverbounce_sdk import urlfor
+from neverbounce_sdk import urlforversion
 
 
 @responses.activate
 def test_poe_confirm():
     # this is the exepcted response
     responses.add(responses.GET,
-                  urlfor('poe', 'confirm'),
+                  urlforversion('v4', 'poe', 'confirm'),
                   status=200,
                   json={'status': 'success'})
 

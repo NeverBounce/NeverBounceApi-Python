@@ -28,6 +28,7 @@ resp = client.jobs_create(
     # auto_parse=True,
     # auto_start=True,
     # as_sample=False,
-    # from_url=False
+    # from_url=False,
+    # historical_data=True
     )
 print(resp['job_id'])

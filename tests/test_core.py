@@ -116,3 +116,21 @@ def test_setting_timeout_with_integer():
     client = neverbounce_sdk.client()
     client.timeout = 5
     assert client.timeout == 5
+
+
+def test_default_client_api_version_is_default():
+    """A newly created client must be configured with default api_version"""
+    client = neverbounce_sdk.client()
+    assert client.api_version == "v4"
+
+
+def test_setting_api_version():
+    """You may set API version NeverBounceAPIClient.api_version property"""
+    client = neverbounce_sdk.client("api_key", None, 1, "some_version")
+    assert client.api_version == "some_version"
+
+
+def test_setting_api_version_by_name():
+    """You may set API version NeverBounceAPIClient.api_version property"""
+    client = neverbounce_sdk.client(api_version="some_other_version")
+    assert client.api_version == "some_other_version"

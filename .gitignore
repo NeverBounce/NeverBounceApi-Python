@@ -68,3 +68,4 @@ target/
 **/.DS_STORE
 
 .env
+venv/

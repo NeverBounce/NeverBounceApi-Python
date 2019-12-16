@@ -5,7 +5,7 @@ import pytest
 import responses
 
 import neverbounce_sdk
-from neverbounce_sdk import (urlfor,
+from neverbounce_sdk import (urlforversion,
                              GeneralException)
 from neverbounce_sdk.exceptions import _status_to_exception
 
@@ -17,7 +17,7 @@ def test_account_info(err):
     # just so we can mock out some exceptions and see how the client handles
     # them
     responses.add(responses.GET,
-                  urlfor('account', 'info'),
+                  urlforversion('v4', 'account', 'info'),
                   status=200,
                   json={'status': err, 'message': 'the-message'})
 
@@ -35,7 +35,7 @@ def test_account_info(err):
 @responses.activate
 def test_non_json_response():
     responses.add(responses.GET,
-                  urlfor('account', 'info'),
+                  urlforversion('v4', 'account', 'info'),
                   status=200,
                   # empty dict; client should complain that there's no 'status'
                   # key
@@ -53,7 +53,7 @@ def test_non_json_response():
 @responses.activate
 def test_weird_response_no_status_raises():
     responses.add(responses.GET,
-                  urlfor('account', 'info'),
+                  urlforversion('v4', 'account', 'info'),
                   status=200,
                   # empty dict; client should complain that there's no 'status'
                   # key

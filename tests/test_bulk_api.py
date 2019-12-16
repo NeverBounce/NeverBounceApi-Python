@@ -6,7 +6,7 @@ import pytest
 import responses
 
 import neverbounce_sdk
-from neverbounce_sdk import urlfor
+from neverbounce_sdk import urlforversion
 from neverbounce_sdk.bulk import _job_status
 
 
@@ -57,7 +57,7 @@ def test_results(client, monkeypatch):
 @responses.activate
 def test_raw_result_interface(client):
     responses.add(responses.GET,
-                  urlfor('jobs', 'results'),
+                  urlforversion('v4', 'jobs', 'results'),
                   status=200,
                   json={'status': 'success'})
 
@@ -69,7 +69,7 @@ def test_raw_result_interface(client):
 @responses.activate
 def test_raw_search_interface(client):
     responses.add(responses.GET,
-                  urlfor('jobs', 'search'),
+                  urlforversion('v4', 'jobs', 'search'),
                   status=200,
                   json={'status': 'success'})
 
@@ -94,7 +94,7 @@ def test_raw_search_interface(client):
 @responses.activate
 def test_create(client):
     responses.add(responses.POST,
-                  urlfor('jobs', 'create'),
+                  urlforversion('v4', 'jobs', 'create'),
                   json={'status': 'success'},
                   status=200)
 
@@ -119,7 +119,7 @@ def test_create(client):
 @responses.activate
 def test_parse(client):
     responses.add(responses.POST,
-                  urlfor('jobs', 'parse'),
+                  urlforversion('v4', 'jobs', 'parse'),
                   json={'status': 'success'},
                   status=200)
 
@@ -133,7 +133,7 @@ def test_parse(client):
 @responses.activate
 def test_start(client):
     responses.add(responses.POST,
-                  urlfor('jobs', 'start'),
+                  urlforversion('v4', 'jobs', 'start'),
                   json={'status': 'success'},
                   status=200)
 
@@ -147,7 +147,7 @@ def test_start(client):
 @responses.activate
 def test_status(client):
     responses.add(responses.GET,
-                  urlfor('jobs', 'status'),
+                  urlforversion('v4', 'jobs', 'status'),
                   json={'status': 'success'},
                   status=200)
 
@@ -158,7 +158,7 @@ def test_status(client):
 @responses.activate
 def test_delete(client):
     responses.add(responses.GET,
-                  urlfor('jobs', 'delete'),
+                  urlforversion('v4', 'jobs', 'delete'),
                   json={'status': 'success'},
                   status=200)
 

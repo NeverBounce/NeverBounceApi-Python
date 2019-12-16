@@ -6,7 +6,7 @@ import pytest
 import responses
 
 import neverbounce_sdk
-from neverbounce_sdk import urlfor, GeneralException
+from neverbounce_sdk import urlforversion, GeneralException
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def tempfile(tmpdir):
 @responses.activate
 def test_download_defaults(client, tempfile):
     responses.add(responses.POST,
-                  urlfor('jobs', 'download'),
+                  urlforversion('v4', 'jobs', 'download'),
                   body=r'data\ndata',
                   status=200,
                   content_type='application/octet-stream')
@@ -49,7 +49,7 @@ def test_download_defaults(client, tempfile):
 @responses.activate
 def test_download_upstream_error(client, tempfile):
     responses.add(responses.POST,
-                  urlfor('jobs', 'download'),
+                  urlforversion('v4', 'jobs', 'download'),
                   status=200,
                   json={'status': 'general_failure',
                         'message': 'Something went wrong'})

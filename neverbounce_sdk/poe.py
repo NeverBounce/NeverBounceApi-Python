@@ -1,7 +1,7 @@
 """
 API support for endpoints located at API_ROOT/poe
 """
-from .utils import urlfor
+from .utils import urlforversion
 
 
 class POEMixin(object):
@@ -24,7 +24,7 @@ class POEMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#widget-poe-confirm
         """
-        endpoint = urlfor('poe', 'confirm')
+        endpoint = urlforversion(self.api_version, 'poe', 'confirm')
         params = dict(email=email,
                       transaction_id=transaction_id,
                       confirmation_token=confirmation_token,

@@ -1,4 +1,4 @@
-from .utils import urlfor
+from .utils import urlforversion
 
 __all__ = ['JobRunnerMixin']
 
@@ -116,7 +116,7 @@ class JobRunnerMixin(object):
 
         data.update(extra_query)
 
-        endpoint = urlfor('jobs', 'search')
+        endpoint = urlforversion(self.api_version, 'jobs', 'search')
         resp = self._make_request('GET', endpoint, params=data)
         self._check_response(resp)
         return resp.json()
@@ -130,7 +130,7 @@ class JobRunnerMixin(object):
 
         data.update(extra_query)
 
-        endpoint = urlfor('jobs', 'results')
+        endpoint = urlforversion(self.api_version, 'jobs', 'results')
         resp = self._make_request('GET', endpoint, params=data)
         self._check_response(resp)
         return resp.json()
@@ -206,7 +206,8 @@ class JobRunnerMixin(object):
         return ResultIter(self.raw_results, job_id, **kwargs)
 
     def jobs_create(self, input, from_url=False, filename=None,
-                    auto_parse=False, auto_start=False, as_sample=False):
+                    auto_parse=False, auto_start=False, as_sample=False,
+                    historical_data=True):
         """
         Creates a bulk job.
 
@@ -237,6 +238,9 @@ class JobRunnerMixin(object):
                 If ``True``, run only a sample of the given input and return an
                 estimation of the job's total bounce rate.
 
+            historical_data (bool): If ``True``, return historical data.
+                Default is ``True``.
+
         Returns:
             A ``dict`` with keys ``status``, ``job_id``, and
             ``execution_time``.
@@ -244,12 +248,16 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-create
         """
-        endpoint = urlfor('jobs', 'create')
+        endpoint = urlforversion(self.api_version, 'jobs', 'create')
 
         data = dict(input=input,
                     auto_parse=int(auto_parse),
                     auto_start=int(auto_start),
                     run_sample=int(as_sample))
+
+        data['request_meta_data'] = {
+            'leverage_historical_data': int(historical_data)
+        }
 
         data['input_location'] = 'remote_url' if from_url else 'supplied'
         if filename is not None:
@@ -280,7 +288,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-parse
         """
-        endpoint = urlfor('jobs', 'parse')
+        endpoint = urlforversion(self.api_version, 'jobs', 'parse')
         data = dict(job_id=job_id, auto_start=int(auto_start))
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
@@ -307,7 +315,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-start
         """
-        endpoint = urlfor('jobs', 'start')
+        endpoint = urlforversion(self.api_version, 'jobs', 'start')
         data = dict(job_id=job_id, run_sample=int(run_sample))
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
@@ -328,7 +336,7 @@ class JobRunnerMixin(object):
         See also:
             https://developers.neverbounce.com/v4.0/reference#jobs-status
         """
-        endpoint = urlfor('jobs', 'status')
+        endpoint = urlforversion(self.api_version, 'jobs', 'status')
         resp = self._make_request('GET', endpoint, params=dict(job_id=job_id))
         self._check_response(resp)
         return resp.json()
@@ -476,7 +484,7 @@ class JobRunnerMixin(object):
             'spooled': 'LINEFEED_0A'       # \n\r
         })
 
-        endpoint = urlfor('jobs', 'download')
+        endpoint = urlforversion(self.api_version, 'jobs', 'download')
         # the return val is (possibly) streaming; remember to set stream
         resp = self._make_request('POST', endpoint, json=data, stream=True)
 
@@ -501,7 +509,7 @@ class JobRunnerMixin(object):
         See Also:
             https://developers.neverbounce.com/v4.0/reference#jobs-delete
         """
-        endpoint = urlfor('jobs', 'delete')
+        endpoint = urlforversion(self.api_version, 'jobs', 'delete')
         resp = self._make_request('GET', endpoint, params=dict(job_id=job_id))
         self._check_response(resp)
         return resp.json()
