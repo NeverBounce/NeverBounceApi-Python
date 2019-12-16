@@ -206,7 +206,7 @@ class JobRunnerMixin(object):
         return ResultIter(self.raw_results, job_id, **kwargs)
 
     def jobs_create(self, input, from_url=False, filename=None,
-                    auto_parse=False, auto_start=False, as_sample=False):
+                    auto_parse=False, auto_start=False, as_sample=False, historical_data=False):
         """
         Creates a bulk job.
 
@@ -237,6 +237,9 @@ class JobRunnerMixin(object):
                 If ``True``, run only a sample of the given input and return an
                 estimation of the job's total bounce rate.
 
+            historical_data (bool): If ``True``, return historical data.
+                Default is ``True``.
+
         Returns:
             A ``dict`` with keys ``status``, ``job_id``, and
             ``execution_time``.
@@ -250,6 +253,9 @@ class JobRunnerMixin(object):
                     auto_parse=int(auto_parse),
                     auto_start=int(auto_start),
                     run_sample=int(as_sample))
+
+        if historical_data:
+            data['request_meta_data'] = {'leverage_historical_data': int(historical_data)}
 
         data['input_location'] = 'remote_url' if from_url else 'supplied'
         if filename is not None:
