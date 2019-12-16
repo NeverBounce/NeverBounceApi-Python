@@ -207,7 +207,7 @@ class JobRunnerMixin(object):
 
     def jobs_create(self, input, from_url=False, filename=None,
                     auto_parse=False, auto_start=False, as_sample=False,
-                    historical_data=False):
+                    historical_data=True):
         """
         Creates a bulk job.
 
@@ -255,10 +255,9 @@ class JobRunnerMixin(object):
                     auto_start=int(auto_start),
                     run_sample=int(as_sample))
 
-        if historical_data:
-            data['request_meta_data'] = {
-                'leverage_historical_data': int(historical_data)
-            }
+        data['request_meta_data'] = {
+            'leverage_historical_data': int(historical_data)
+        }
 
         data['input_location'] = 'remote_url' if from_url else 'supplied'
         if filename is not None:
