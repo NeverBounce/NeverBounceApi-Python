@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 API_ROOT = 'https://api.neverbounce.com'
-API_VERSION = 'v4'
+API_VERSION = 'v4.2'
 
 
 def urlfor(*parts):
