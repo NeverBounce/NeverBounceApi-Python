@@ -21,7 +21,7 @@ def test_single_check():
     assert info == {'status': 'success'}
     assert len(responses.calls) == 1
     url = responses.calls[0].request.url
-    for urlchunk in ('https://api.neverbounce.com/v4/single/check',
+    for urlchunk in ('https://api.neverbounce.com/v4.2/single/check',
                      'email=test%40example.com',
                      'address_info=0',
                      'credits_info=1',
@@ -34,17 +34,17 @@ def test_single_check():
 def test_single_check_with_specific_version():
     # this is the exepcted response
     responses.add(responses.GET,
-                  urlforversion('v4.1', 'single', 'check'),
+                  urlforversion('v4.2', 'single', 'check'),
                   status=200,
                   json={'status': 'success'})
 
-    with neverbounce_sdk.client(api_key='abc', api_version="v4.1") as client:
+    with neverbounce_sdk.client(api_key='abc', api_version="v4.2") as client:
         info = client.single_check('test@example.com', credits_info=True)
 
     assert info == {'status': 'success'}
     assert len(responses.calls) == 1
     url = responses.calls[0].request.url
-    for urlchunk in ('https://api.neverbounce.com/v4.1/single/check',
+    for urlchunk in ('https://api.neverbounce.com/v4.2/single/check',
                      'email=test%40example.com',
                      'address_info=0',
                      'credits_info=1',
