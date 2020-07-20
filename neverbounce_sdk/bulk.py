@@ -251,8 +251,9 @@ class JobRunnerMixin(object):
                 is ``None``.
 
             callback_headers (dict):
-                If given, callbacks with headers will be send to the URL specified in "callback_url". Default
-                is ``None``.
+                If given, callbacks with headers will be send to the URL
+                specified in "callback_url".
+                Default is ``None``.
 
         Returns:
             A ``dict`` with keys ``status``, ``job_id``, and
