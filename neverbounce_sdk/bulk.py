@@ -207,7 +207,8 @@ class JobRunnerMixin(object):
 
     def jobs_create(self, input, from_url=False, filename=None,
                     auto_parse=False, auto_start=False, as_sample=False,
-                    historical_data=True):
+                    historical_data=True, allow_manual_review=None,
+                    callback_url=None, callback_headers=None):
         """
         Creates a bulk job.
 
@@ -241,6 +242,19 @@ class JobRunnerMixin(object):
             historical_data (bool): If ``True``, return historical data.
                 Default is ``True``.
 
+            allow_manual_review (bool):
+                If ``True``, allows job to fall to manual review.
+                Default is ``None``.
+
+            callback_url (str):
+                If given, callbacks will be send to the specified URL. Default
+                is ``None``.
+
+            callback_headers (dict):
+                If given, callbacks with headers will be send to the URL
+                specified in "callback_url".
+                Default is ``None``.
+
         Returns:
             A ``dict`` with keys ``status``, ``job_id``, and
             ``execution_time``.
@@ -262,6 +276,15 @@ class JobRunnerMixin(object):
         data['input_location'] = 'remote_url' if from_url else 'supplied'
         if filename is not None:
             data['filename'] = filename
+
+        if allow_manual_review is not None:
+            data['allow_manual_review'] = int(allow_manual_review)
+
+        if callback_url is not None:
+            data['callback_url'] = callback_url
+
+        if callback_headers is not None:
+            data['callback_headers'] = callback_headers
 
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
@@ -294,7 +317,7 @@ class JobRunnerMixin(object):
         self._check_response(resp)
         return resp.json()
 
-    def jobs_start(self, job_id, run_sample=False):
+    def jobs_start(self, job_id, run_sample=False, allow_manual_review=None):
         """
         This endpoint allows you to start a job created or parsed with
         auto_start disabled. Once the list has been started the credits will be
@@ -308,6 +331,10 @@ class JobRunnerMixin(object):
                 Whether or not to run a sample of this job's contents and
                 return an estimate of the job's bounce rate
 
+            allow_manual_review (bool):
+                If ``True``, allows job to fall to manual review.
+                Default is ``None``.
+
         Returns:
             A ``dict`` with keys ``status``, ``queue_id``, and
             ``execution_time``.
@@ -317,6 +344,10 @@ class JobRunnerMixin(object):
         """
         endpoint = urlforversion(self.api_version, 'jobs', 'start')
         data = dict(job_id=job_id, run_sample=int(run_sample))
+
+        if allow_manual_review is not None:
+            data['allow_manual_review'] = int(allow_manual_review)
+
         resp = self._make_request('POST', endpoint, json=data)
         self._check_response(resp)
         return resp.json()

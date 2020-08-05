@@ -5,7 +5,7 @@ with open(".env", "r") as dotenv:
     api_key = dotenv.read().replace('\n', '')
 
 # Create sdk client
-client = neverbounce_sdk.client(api_key=api_key, api_version='v4.1')
+client = neverbounce_sdk.client(api_key=api_key, api_version='v4.2')
 
 # Get account info
 info = client.account_info()

@@ -11,7 +11,7 @@ from neverbounce_sdk import urlforversion
 def test_poe_confirm():
     # this is the exepcted response
     responses.add(responses.GET,
-                  urlforversion('v4', 'poe', 'confirm'),
+                  urlforversion('v4.2', 'poe', 'confirm'),
                   status=200,
                   json={'status': 'success'})
 
@@ -25,7 +25,7 @@ def test_poe_confirm():
     assert info == {'status': 'success'}
     assert len(responses.calls) == 1
     url = responses.calls[0].request.url
-    for urlchunk in ('https://api.neverbounce.com/v4/poe/confirm',
+    for urlchunk in ('https://api.neverbounce.com/v4.2/poe/confirm',
                      'email=support%40neverbounce.com',
                      'transaction_id=NBPOE-TXN-5942940c09669',
                      'confirmation_token=e3173fdbbdce6bad26522dae792911f2',
