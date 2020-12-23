@@ -68,11 +68,11 @@ jobs::
     job = client.jobs_create(emails)
 
     # all state-changing methods return a status object
-    resp = client.jobs_parse(job['id'], auto_start=False)
+    resp = client.jobs_parse(job['job_id'], auto_start=False)
     assert resp['status'] == 'success'
 
-    client.jobs_start(job['id'])
-    progress = client.jobs_status(job['id'])
+    client.jobs_start(job['job_id'])
+    progress = client.jobs_status(job['job_id'])
     print(progress)  # dict with keys 'job_status', 'started', 'percent_complete', etc
 
 When creating a job, you may attach "metadata" in the form of additional keys
